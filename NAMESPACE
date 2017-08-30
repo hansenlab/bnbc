@@ -8,4 +8,4 @@ export(getGroupZeros)
 export(dropGroupZeros)
 export(bapply)
 export(capply)
-
+export(smoothCG)

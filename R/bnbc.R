@@ -3,8 +3,13 @@ library(GenomicRanges)
 library(Matrix)
 library(preprocessCore)
 library(sva)
+library(EBImage)
 
 ## do roxygen documentation eventually
+
+smoothCG <- function(cg, radius=3, sigma=0.5) capply(cg, gblur,
+                                                     sigma=sigma, radius=radius,
+                                                     boundary="replicate")
 
 personSub <- function(se, persons){
     idx <- which(metadata(se)$people == persons)
