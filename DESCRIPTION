@@ -1,0 +1,21 @@
+Package: bnbc
+Version: 0.0.1
+Title: Bandwise normalization and batch correction of Hi-C data
+Description: Tools to normalize (several) Hi-C data from replicates.
+Authors@R: c(
+	   person("Kipper", "Fletez-Brant", role = c("cre", "aut"), email = "cafletezbrant@gmail.com"),
+	   person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
+Depends:
+	methods,
+	BiocGenerics,
+Suggests:
+	BiocStyle,
+	knitr,
+	rmarkdown
+Imports:
+	sva
+VignetteBuilder: knitr
+License: Artistic-2.0
+URL: https://github.com/hansenlab/bnbc
+BugReports: https://github.com/hansenlab/bnbc/issues
+biocViews: Software
