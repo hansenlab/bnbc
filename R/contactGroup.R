@@ -297,6 +297,11 @@ capply <- function(cg, FUN, ncores=1, ...){
   cg2
 }
 
+distanceIdx <- function(cg, threshold, step){
+    return(c(1:dim(cg)[1])[which(1:dim(cg)[1] * step <= threshold)])
+}
+
+
 getBandIdx <- function(n, band.no){
     ## number of elements is number of rows - (band.no - 1)
     n.elems <- n - (band.no - 1)
