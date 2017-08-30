@@ -2,13 +2,6 @@ library(Matrix)
 library(parallel)
 library(preprocessCore)
 library(pryr)
-library(sva)
-## 2 issues:
-## object size in memory and impact on multicore processing (R passes by copy)
-## list of matrices vs array and benefits of each
-## -- should be list of banded matrices, bc distance filtering means
-##    17% of matrix is used for raw data
-##    * band matrix has support for symmetric banding
 
 setOldClass("ContactGroup")
 
@@ -90,14 +83,6 @@ dropPeople <- function(x, idx){
     metadata(x) <- metadata(x)[idx,]
     x
 }
-
-## dropPeople <- function(x, names.list){
-##     idx <- metadata(x)$person %in% names.list
-##     contacts(x) <- contacts(x)[idx]
-##     metadata(x)$person <- metadata(x)$person[idx]
-##     x
-## }
-
 
 ## gets i bins
 assign("[.ContactGroup",

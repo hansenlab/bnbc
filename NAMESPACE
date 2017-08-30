@@ -1,0 +1,11 @@
+useDynLib(bnbc, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+export(bnbc)
+export(librarySizeScale)
+export(getBandMatrix)
+export(getGroupZeros)
+export(dropGroupZeros)
+export(bapply)
+export(capply)
+
