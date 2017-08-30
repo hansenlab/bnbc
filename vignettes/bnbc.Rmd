@@ -1,0 +1,37 @@
+---
+title: "The bnbc User's Guide"
+author: "Kipper Fletez-Brandt, Kasper Daniel Hansen"
+date: "`r doc_date()`"
+package: "`r pkg_ver(bnc')`"
+bibliography: bnbc.bib
+abstract: >
+  A comprehensive guide to using the bnbc package for normalizing Hi-C replicates.
+vignette: >
+  %\VignetteIndexEntry{bnbc User's Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output: 
+  BiocStyle::html_document
+---
+
+# Introduction
+
+Something. Cite [@HiCassay]
+
+# Dependencies
+
+This document has the following dependencies
+
+```{r dependencies, warning=FALSE, message=FALSE}
+library(bnbc)
+```
+
+# Sessioninfo
+
+```{r sessionInfo, results='asis', echo=FALSE}
+sessionInfo()
+```
+
+# References
+
+
