@@ -35,7 +35,7 @@ bnbcC <- function(cg, batch, threshold=NULL, step=NULL,
   mat.list <- list()
   for (ii in bstart:nbands){
     if (ii %% 50 == 0){ cat(".") }
-    mat <- getBandMatrix(tacts, nrow(tacts[[1]]), ii, nppl)
+    mat <- getBandMatrix(cg, ii)
     mat.good <- 1:nrow(mat)
     if (qn){ mat <- normalize.quantiles(mat, FALSE) }
     if(!mean.only){
@@ -54,7 +54,7 @@ bnbcC <- function(cg, batch, threshold=NULL, step=NULL,
   new.cg
 }
 
-bnbc <- function(cg, batch, treshold=NULL, step=NULL,
+bnbc <- function(cg, batch, threshold=NULL, step=NULL,
                  qn=TRUE, nbands=NULL, mod=NULL,
                  mean.only=FALSE, tol=5, bstart=2){
   dims <- dim(cg)
@@ -65,7 +65,7 @@ bnbc <- function(cg, batch, treshold=NULL, step=NULL,
   }
   for (ii in bstart:nbands){
     if (ii %% 50 == 0){ cat(".") }
-    mat <- getBandMatrix(tacts, nrow(tacts[[1]]), ii, nppl)
+    mat <- getBandMatrix(cg, ii)
     mat.good <- 1:nrow(mat)
     if (qn){ mat <- normalize.quantiles(mat, FALSE) }
     if(!mean.only){

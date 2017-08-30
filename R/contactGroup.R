@@ -330,6 +330,11 @@ getBandMatrix <- function(cg, band.no=1){
   tmp
 }
 
+bandLevelBatchVars <- function(mat, batches){
+  sapply(unique(batches), function(ii){
+    rowVars(mat[,batches == ii])
+  })
+}
 
 band <- function(mat, band.no){ return(mat[getBandIdx(nrow(mat), band.no)]) }
 

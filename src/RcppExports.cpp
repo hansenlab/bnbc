@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // replace
 NumericMatrix replace(NumericMatrix mat, IntegerMatrix idx, NumericVector update);
-RcppExport SEXP _tmp_rcpp_replace(SEXP matSEXP, SEXP idxSEXP, SEXP updateSEXP) {
+RcppExport SEXP _bnbc_replace(SEXP matSEXP, SEXP idxSEXP, SEXP updateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // updateBand
 List updateBand(List tact_list, IntegerMatrix idx, NumericMatrix band);
-RcppExport SEXP _tmp_rcpp_updateBand(SEXP tact_listSEXP, SEXP idxSEXP, SEXP bandSEXP) {
+RcppExport SEXP _bnbc_updateBand(SEXP tact_listSEXP, SEXP idxSEXP, SEXP bandSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // getBandIdxC
 IntegerMatrix getBandIdxC(int n, int band_no);
-RcppExport SEXP _tmp_rcpp_getBandIdxC(SEXP nSEXP, SEXP band_noSEXP) {
+RcppExport SEXP _bnbc_getBandIdxC(SEXP nSEXP, SEXP band_noSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -45,7 +45,7 @@ END_RCPP
 }
 // getSeq
 IntegerVector getSeq(int a, int b);
-RcppExport SEXP _tmp_rcpp_getSeq(SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _bnbc_getSeq(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // updateBands
 List updateBands(List tact_list, int n, int bstart, int nbands, List band_mats);
-RcppExport SEXP _tmp_rcpp_updateBands(SEXP tact_listSEXP, SEXP nSEXP, SEXP bstartSEXP, SEXP nbandsSEXP, SEXP band_matsSEXP) {
+RcppExport SEXP _bnbc_updateBands(SEXP tact_listSEXP, SEXP nSEXP, SEXP bstartSEXP, SEXP nbandsSEXP, SEXP band_matsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,15 +72,15 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_tmp_rcpp_replace", (DL_FUNC) &_tmp_rcpp_replace, 3},
-    {"_tmp_rcpp_updateBand", (DL_FUNC) &_tmp_rcpp_updateBand, 3},
-    {"_tmp_rcpp_getBandIdxC", (DL_FUNC) &_tmp_rcpp_getBandIdxC, 2},
-    {"_tmp_rcpp_getSeq", (DL_FUNC) &_tmp_rcpp_getSeq, 2},
-    {"_tmp_rcpp_updateBands", (DL_FUNC) &_tmp_rcpp_updateBands, 5},
+    {"_bnbc_replace", (DL_FUNC) &_bnbc_replace, 3},
+    {"_bnbc_updateBand", (DL_FUNC) &_bnbc_updateBand, 3},
+    {"_bnbc_getBandIdxC", (DL_FUNC) &_bnbc_getBandIdxC, 2},
+    {"_bnbc_getSeq", (DL_FUNC) &_bnbc_getSeq, 2},
+    {"_bnbc_updateBands", (DL_FUNC) &_bnbc_updateBands, 5},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_tmp_rcpp(DllInfo *dll) {
+RcppExport void R_init_bnbc(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

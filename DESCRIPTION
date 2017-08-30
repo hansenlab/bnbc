@@ -8,12 +8,15 @@ Authors@R: c(
 Depends:
 	methods,
 	BiocGenerics,
+  sva,
+  EBImage,
+  preprocessCore,
+  matrixStats
 Suggests:
 	BiocStyle,
 	knitr,
 	rmarkdown
 Imports:
-	sva,
   Rcpp (>= 0.12.12)
 LinkingTo: Rcpp (>= 0.12.12)
 VignetteBuilder: knitr

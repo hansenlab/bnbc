@@ -2,7 +2,7 @@
 title: "The bnbc User's Guide"
 author: "Kipper Fletez-Brandt, Kasper Daniel Hansen"
 date: "`r doc_date()`"
-<!-- package: "`r pkg_ver(bnbc)`" -->
+
 bibliography: bnbc.bib
 abstract: >
   A comprehensive guide to using the bnbc package for normalizing Hi-C replicates.
