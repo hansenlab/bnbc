@@ -1,6 +1,6 @@
 ---
 title: "The bnbc User's Guide"
-author: "Kipper Fletez-Brandt, Kasper Daniel Hansen"
+author: "Kipper Fletez-Brant, Kasper Daniel Hansen"
 date: "`r doc_date()`"
 
 bibliography: bnbc.bib
