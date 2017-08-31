@@ -8,17 +8,24 @@ Authors@R: c(
 Depends:
 	methods,
 	BiocGenerics,
-  sva,
-  EBImage,
-  preprocessCore,
-  matrixStats
+ 	SummarizedExperiment,
+	GenomicRanges
 Suggests:
 	BiocStyle,
 	knitr,
 	rmarkdown
 Imports:
-  Rcpp (>= 0.12.12)
-LinkingTo: Rcpp (>= 0.12.12)
+	Rcpp (>= 0.12.12),
+	IRanges,
+	GenomeInfoDb,
+	S4Vectors,
+	matrixStats,
+	preprocessCore,
+	sva,
+	parallel,
+	Matrix,
+	EBImage
+LinkingTo: Rcpp
 VignetteBuilder: knitr
 License: Artistic-2.0
 URL: https://github.com/hansenlab/bnbc

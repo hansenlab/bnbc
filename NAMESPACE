@@ -1,6 +1,22 @@
 useDynLib(bnbc, .registration=TRUE)
-exportPattern("^[[:alpha:]]+")
 importFrom(Rcpp, evalCpp)
+
+import(methods)
+import(SummarizedExperiment)
+import(GenomicRanges)
+import(IRanges)
+import(S4Vectors)
+importMethodsFrom(GenomeInfoDb, genome, seqlengths, seqlevels)
+
+
+importFrom(BiocGenerics, rownames, cbind)
+importFrom(sva, ComBat)
+importFrom(preprocessCore, normalize.quantiles)
+importFrom(parallel, mclapply)
+importFrom(matrixStats, rowVars)
+importFrom(EBImage, gblur)
+importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
+
 export(bnbc)
 export(librarySizeScale)
 export(getBandMatrix)
