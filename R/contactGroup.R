@@ -130,14 +130,11 @@ setMethod("genome", "ContactGroup",
           })
 
 librarySize <- function(x){
-    stopifnot(class(x) == "ContactGroup")
-    libs <- sapply(1:dim(x)[3], function(ii){
-        tmp <- contacts(x)[[ii]]
-        sum(triu(tmp))
-    })
-    libs
+  libs <- sapply(1:dim(x)[3], function(ii){
+    tmp <- contacts(x)[[ii]]
+    sum(triu(tmp))
+  })
 }
-
 
 setMethod("librarySize", "ContactGroup",
           function(x){
