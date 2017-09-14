@@ -28,6 +28,7 @@ export(smoothCG)
 export(ContactGroup)
 export(metadata)
 export(contacts)
+export(librarySize)
 export(librarySizeScale)
 export(dropPeople)
 
