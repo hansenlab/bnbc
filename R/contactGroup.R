@@ -146,7 +146,7 @@ setMethod("librarySize", "ContactGroup",
           })
 
 
-librarySizeScale <- function(x, k=1e6, a=0.5, b=1){
+logCPM <- function(x, k=1e6, a=0.5, b=1){
     libs <- librarySize(x)
     contacts(x) <- lapply(1:dim(x)[3], function(ii){
         return(log((contacts(x)[[ii]] + a )/(libs[ii] + b) * k))
@@ -333,4 +333,14 @@ getGroupZeros <- function(cg){
   Reduce(intersect, lapply(contacts(cg), function(xx){
     xx[getBandIdx(nrow(xx), 1)] <- 0
     return(which(rowMeans(xx) == 0)) }))
+}
+
+boxSmooth <- function(xx, h){
+  size <- (2 * h + 1)
+  sbox <- makeBrush(size=size, shape="box")/size^2
+  filter2(xx, sbox, boundary="replicate")
+}
+
+doBoxSmooth <- function(cg, h, ncores=1){
+  capply(cg, boxSmooth, h=h, ncores=ncores)
 }
