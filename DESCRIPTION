@@ -23,7 +23,6 @@ Imports:
 	preprocessCore,
 	sva,
 	parallel,
-	Matrix,
 	EBImage
 LinkingTo: Rcpp
 VignetteBuilder: knitr
