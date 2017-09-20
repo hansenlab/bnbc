@@ -26,6 +26,16 @@ This document has the following dependencies
 library(bnbc)
 ```
 
+# Some code
+
+```{r}
+# data(chr22)
+# chr22
+```
+
+
+
+
 # Sessioninfo
 
 ```{r sessionInfo, results='asis', echo=FALSE}
