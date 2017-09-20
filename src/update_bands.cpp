@@ -17,17 +17,6 @@ NumericMatrix replace(NumericMatrix mat, IntegerMatrix idx, NumericVector update
 }
 
 // [[Rcpp::export()]]
-List updateBand(List tact_list, IntegerMatrix idx, NumericMatrix band){
-  for (int ii=0; ii < band.ncol(); ii++){
-    NumericVector band_col = band(_, ii);
-    NumericVector v = band_col;
-    tact_list[ii] = replace(tact_list[ii], idx, band_col);
-    NumericMatrix m = tact_list[ii];
-  }
-  return tact_list;
-}
-
-// [[Rcpp::export()]]
 IntegerMatrix getBandIdxC(int n, int band_no){
   int n_elems = n - band_no + 1;
   IntegerMatrix idx_mat = IntegerMatrix(n_elems, 2);
@@ -58,6 +47,20 @@ List deepCopy(List in_list){
   }
   return out_list;
 }
+
+// [[Rcpp::export()]]
+List updateBand(List tact_list, IntegerMatrix idx, NumericMatrix band){
+  const List original(tact_list);
+  List tact_list2 = deepCopy(original);
+  for (int ii=0; ii < band.ncol(); ii++){
+    NumericVector band_col = band(_, ii);
+    NumericVector v = band_col;
+    tact_list2[ii] = replace(tact_list2[ii], idx, band_col);
+    NumericMatrix m = tact_list2[ii];
+  }
+  return tact_list2;
+}
+
 
 // [[Rcpp::export()]]
 List updateBands(List tact_list, int n, int bstart, int nbands, List band_mats){
