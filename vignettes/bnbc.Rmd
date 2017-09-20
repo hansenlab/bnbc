@@ -29,8 +29,11 @@ library(bnbc)
 # Some code
 
 ```{r}
-# data(chr22)
-# chr22
+data(chr22)
+chr22.cpm <- logCPM(chr22)
+chr22.smooth <- doBoxSmooth(chr22.cpm, h=5)
+batches <- metadata(chr22.smooth)$R1_library_prep_date
+chr22.bnbc <- bnbc(chr22.smooth, batches, 1e7, 40000, nbands=10)
 ```
 
 

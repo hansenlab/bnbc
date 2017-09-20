@@ -35,7 +35,10 @@ bnbc <- function(cg, batch, threshold=NULL, step=NULL,
             batchvars <- bandLevelBatchVars(mat, batch)
             mat.good <- abs(rowMeans(mat)) > 0 & round(rowMeans(batchvars), tol)  > 0
         }
-        mat[mat.good,] <- ComBat(mat[mat.good,], batch, mod=mod, mean.only=mean.only)
+        tryCatch({
+        mat[mat.good,] <- ComBat(mat[mat.good,], batch, mod=mod,
+                                 mean.only=mean.only)
+        }, error=function(e){ warning(paste0(ii, "\n")) })
         mat[!mat.good,] <- 0
         tacts <- updateBand(tact_list=tacts,
                             idx=getBandIdx(nrow(tacts[[1]]), ii)-1,
