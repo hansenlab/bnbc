@@ -1,7 +1,3 @@
-smoothCG <- function(cg, radius=3, sigma=0.5) {
-    capply(cg, gblur, sigma=sigma, radius=radius, boundary="replicate")
-}
-
 ## personSub <- function(se, persons){
 ##     idx <- which(metadata(se)$people == persons)
 ##     se2 <- se
@@ -17,8 +13,7 @@ make.sym <- function(mat){
 bnbc <- function(cg, batch, threshold=NULL, step=NULL,
                   qn=TRUE, nbands=NULL, mod=NULL,
                   mean.only=FALSE, tol=5, bstart=2){
-    dims <- dim(cg)
-    nppl <- dims[3]
+    nppl <- ncol(cg)
     tacts <- contacts(cg)
     if(is.null(nbands)){
         nbands <- distanceIdx(cg, threshold = threshold, step = step)

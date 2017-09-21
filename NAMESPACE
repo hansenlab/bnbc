@@ -16,26 +16,28 @@ importFrom(parallel, mclapply)
 importFrom(matrixStats, rowVars)
 importFrom(EBImage, gblur, makeBrush, filter2)
 # importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
+
+
+
+
+
+
 export(bnbc)
+
+exportClasses(ContactGroup)
+exportMethods("rowData", "rowData<-", "colData", "colData<-", "dim", "show", "[")
+export(ContactGroup, contacts, "contacts<-")
+
+export(librarySize)
+export(logCPM)
+export(boxSmoother)
+export(gaussSmoother)
+
 export(getBandMatrix)
 export(getGroupZeros)
 export(dropGroupZeros)
-export(bapply)
-export(capply)
-export(smoothCG)
-export(ContactGroup)
-export(metadata)
-export(contacts)
-export(librarySize)
-export(logCPM)
-export(doBoxSmooth)
-export(dropPeople)
-
-exportClasses(ContactGroup)
-exportMethods("rowData", "rowData<-", "mcols", "ncol", "nrow", "dim", "colData", "colData<-")
-export("print.ContactGroup")
-export("contacts<-")
-export("[.ContactGroup")
+export(cgBandApply)
+export(cgApply)
 export(distanceIdx)
 export(getBandIdx)
 export(getBandMatrix)

@@ -1,82 +1,66 @@
-logCPM <- function(x, k=1e6, a=0.5, b=1){
-    libs <- librarySize(x)
-    contacts(x) <- lapply(1:dim(x)[3], function(ii){
-        return(log((contacts(x)[[ii]] + a )/(libs[ii] + b) * k))
+logCPM <- function(x){
+    stopifnot(is(x, "ContactGroup"))
+    libs <- (librarySize(x) + 1) / 10^6
+    contacts(x) <- lapply(seq_len(ncol(x)), function(ii) {
+        log(contacts(x)[[ii]] + 0.5 / libs[ii])
     })
     x
 }
 
-boxSmooth <- function(xx, h){
-  size <- (2 * h + 1)
-  sbox <- makeBrush(size=size, shape="box")/size^2
-  filter2(xx, sbox, boundary="replicate")
-}
-
-doBoxSmooth <- function(cg, h, ncores=1){
-  capply(cg, boxSmooth, h=h, ncores=ncores)
-}
-
-librarySize <- function(x){
-  libs <- sapply(1:dim(x)[3], function(ii){
-    tmp <- contacts(x)[[ii]]
-    sum(tmp[upper.tri(tmp)])
-  })
-}
-
-setMethod("librarySize", "ContactGroup",
-          function(x){
-            libs <- sapply(1:dim(x)[3], function(ii){
-              tmp <- contacts(x)[[ii]]
-              sum(tmp[upper.tri(tmp)])
-            })
-            libs
-          })
-
-
-librarySizeScale <- function(x, k=1e6, a=0.5, b=1){
-    libs <- librarySize(x)
-    contacts(x) <- lapply(1:dim(x)[3], function(ii){
-        return(log((contacts(x)[[ii]] + a )/(libs[ii] + b) * k))
+librarySize <- function(x) {
+    stopifnot(is(x, "ContactGroup"))
+    sapply(contacts(x), function(mat) {
+        sum(mat[upper.tri(mat)])
     })
-    x
 }
 
-
-bapply <- function(cg, FUN, nbands=NULL, ncores=1, bstart=2, ...){
-  if(is.null(nbands)){
-    nbands <- nrow(cg) - 1
-  }
-  if (ncores == 1){
-    return(sapply(bstart:nbands, function(ii){
-      FUN(cg, ii, ...)
-    }))
-  }
-  else{
-    return(mclapply(bstart:nbands, function(ii){
-      FUN(cg, ii, ...)
-    }, mc.cores=ncores))
-  }
+gaussSmoother <- function(cg, radius=3, sigma=0.5) {
+    stopifnot(is(cg, "ContactGroup"))
+    cgApply(cg, gblur, sigma=sigma, radius=radius, boundary="replicate")
 }
 
-capply <- function(cg, FUN, ncores=1, ...){
-  cg2 <- cg
-  if (ncores == 1){
-    contacts(cg2) <- lapply(contacts(cg), function(xx){
-      FUN(xx, ...)
-    })
-  }
-  else{
-    contacts(cg2) <- mclapply(contacts(cg), function(xx){
-      FUN(xx, ...)
-    }, mc.cores=ncores)
-  }
-  cg2
+boxSmoother <- function(cg, h, mc.cores=1){
+    stopifnot(is(cg, "ContactGroup"))
+    smoother <- function(xx, h){
+        size <- (2 * h + 1)
+        sbox <- makeBrush(size=size, shape="box")/size^2
+        filter2(xx, sbox, boundary="replicate")
+    }
+    cgApply(cg, smoother, h=h, mc.cores=mc.cores)
+}
+
+cgBandApply <- function(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...){
+    stopifnot(is(cg, "ContactGroup"))
+    if(is.null(nbands)){
+        nbands <- nrow(cg) - 1
+    }
+    if (mc.cores == 1){
+        return(sapply(bstart:nbands, function(ii){
+            FUN(cg, ii, ...)
+        }))
+    }
+    if(mc.cores > 1){
+        return(mclapply(bstart:nbands, function(ii){
+            FUN(cg, ii, ...)
+        }, mc.cores=mc.cores))
+    }
+}
+
+cgApply <- function(cg, FUN, mc.cores=1, ...){
+    stopifnot(is(cg, "ContactGroup"))
+    if (mc.cores == 1) {
+        contacts(cg) <- lapply(contacts(cg), FUN = FUN, ...)
+    }
+    if(mc.cores > 1) {
+        contacts(cg) <- mclapply(contacts(cg), FUN, ..., mc.cores = mc.cores)
+    }
+    cg
 }
 
 distanceIdx <- function(cg, threshold, step){
-    return(c(1:dim(cg)[1])[which(1:dim(cg)[1] * step <= threshold)])
+    stopifnot(is(cg, "ContactGroup"))
+    return((1:nrow(cg))[which(1:nrow(cg) * step <= threshold)])
 }
-
 
 getBandIdx <- function(n, band.no){
     ## number of elements is number of rows - (band.no - 1)
@@ -97,30 +81,32 @@ idxSwap <- function(bandidx){
 }
 
 getBandMatrix <- function(cg, band.no=1){
-  arr <- contacts(cg)
-  nrows <- nrow(cg)
-  nppl <- length(arr)
-  tmp <- do.call(cbind, lapply(1:nppl, function(ii){
-    arr[[ii]][getBandIdx(nrows, band.no)] }))
-  colnames(tmp) <- rownames(colData(cg))
-  tmp
+    is(cg, "ContactGroup")
+    arr <- contacts(cg)
+    idxs <- getBandIdx(nrow(cg), band.no = band.no)
+    tmp <- do.call(cbind, lapply(seq_len(ncol(cg)), function(ii){
+                              arr[[ii]][idxs]
+                          }))
+    colnames(tmp) <- rownames(colData(cg))
+    tmp
 }
 
 bandLevelBatchVars <- function(mat, batches){
-  sapply(unique(batches), function(ii){
-    rowVars(mat[,batches == ii])
-  })
+    sapply(unique(batches), function(ii){
+        rowVars(mat[,batches == ii])
+    })
 }
 
-band <- function(mat, band.no){ return(mat[getBandIdx(nrow(mat), band.no)]) }
+band <- function(mat, band.no){
+    return(mat[getBandIdx(nrow(mat), band.no)])
+}
 
-assign("band<-",
-       function(mat, band.no, value){
-           b.idx <- getBandIdx(nrow(mat), band.no)
-           mat[b.idx] <- value
-           mat[idxSwap(b.idx)] <- value
-           mat
-           })
+`band<-` <- function(mat, band.no, value){
+    b.idx <- getBandIdx(nrow(mat), band.no)
+    mat[b.idx] <- value
+    mat[idxSwap(b.idx)] <- value
+    mat
+}
 
 ## the set of contact matrices have rows/columns of g0s removed
 ## as they are only 0.  also remove corresponding ranges in granges ('gr').
@@ -130,15 +116,20 @@ assign("band<-",
 ## any existing code (cf validContactGroup, which only checks for specific items)
 ## use should occur after !is.null(cg$g0s) test
 dropGroupZeros <- function(cg, g0s){
-  cg$g0s <- granges(cg)
-  mcols(cg$g0s)$kept <- TRUE
-  mcols(cg$g0s)$kept[g0s] <- FALSE
-  cg <- cg[-g0s]
-  cg
+    stopifnot(is(cg, "ContactGroup"))
+    cg$g0s <- rowData(cg)
+    mcols(cg$g0s)$kept <- TRUE
+    mcols(cg$g0s)$kept[g0s] <- FALSE
+    cg <- cg[-g0s]
+    cg
 }
 
 getGroupZeros <- function(cg){
-  Reduce(intersect, lapply(contacts(cg), function(xx){
-    xx[getBandIdx(nrow(xx), 1)] <- 0
-    return(which(rowMeans(xx) == 0)) }))
+    stopifnot(is(cg, "ContactGroup"))
+    Reduce(intersect,
+           lapply(contacts(cg), function(xx){
+               xx[getBandIdx(nrow(xx), 1)] <- 0
+               return(which(rowMeans(xx) == 0))
+           })
+           )
 }
