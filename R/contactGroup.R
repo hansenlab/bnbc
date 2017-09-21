@@ -1,24 +1,24 @@
 setClass("ContactGroup",
-         rowData = "GenomicRanges",
-         contacts = "list",
-         colData = "DataFrame")
+         representation(rowData = "GenomicRanges",
+                        contacts = "list",
+                        colData = "DataFrame"))
 
 
 setValidity("ContactGroup", function(object) {
     txt <- NULL
     contactTxt <- "all components of `contacts` has to be square matrices of the same dimension"
-    if(!all(sapply(x@contacts, is.matrix)))
+    if(!all(sapply(object@contacts, is.matrix)))
         txt <- contactTxt
-    nrowcol <- sapply(x@contacts, dim)
-    if(all(nrowcol[1,1] == nrowcol[,1]))
+    nrowcol <- sapply(object@contacts, dim)
+    if(any(nrowcol[1,1] != nrowcol[,1]))
         txt <- contactTxt
-    if(all(nrowcol[1,] == nrowcol[2,]))
+    if(any(nrowcol[1,] != nrowcol[2,]))
         txt <- contactTxt
-    if(nrow(x@colData) != length(x@contacts))
+    if(nrow(object@colData) != length(object@contacts))
         txt <- c(txt, "the length of `contacts` has to be the same as the number of rows of `colData`")
-    if(!all(names(x@contacts) == rownames(x@colData)))
-        txt <- c(txt, "the names of `contacts` has to be equal to the rownames of `colData`" <- )
-    if(length(x@rowData) != nrow(x@contacts[[1]]))
+    if(!all(names(object@contacts) == rownames(object@colData)))
+        txt <- c(txt, "the names of `contacts` has to be equal to the rownames of `colData`")
+    if(length(object@rowData) != nrow(object@contacts[[1]]))
         txt <- c(txt, "the length of `rowData` should be equal to the number of rows of the matrices in `contacts`")
     txt
 })

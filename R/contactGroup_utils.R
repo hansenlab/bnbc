@@ -1,3 +1,21 @@
+logCPM <- function(x, k=1e6, a=0.5, b=1){
+    libs <- librarySize(x)
+    contacts(x) <- lapply(1:dim(x)[3], function(ii){
+        return(log((contacts(x)[[ii]] + a )/(libs[ii] + b) * k))
+    })
+    x
+}
+
+boxSmooth <- function(xx, h){
+  size <- (2 * h + 1)
+  sbox <- makeBrush(size=size, shape="box")/size^2
+  filter2(xx, sbox, boundary="replicate")
+}
+
+doBoxSmooth <- function(cg, h, ncores=1){
+  capply(cg, boxSmooth, h=h, ncores=ncores)
+}
+
 librarySize <- function(x){
   libs <- sapply(1:dim(x)[3], function(ii){
     tmp <- contacts(x)[[ii]]

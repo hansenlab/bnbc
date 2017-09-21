@@ -6,6 +6,7 @@ Authors@R: c(
 	   person("Kipper", "Fletez-Brant", role = c("cre", "aut"), email = "cafletezbrant@gmail.com"),
 	   person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
 Depends:
+	R (>= 3.4.0),
 	methods,
 	BiocGenerics,
  	SummarizedExperiment,
