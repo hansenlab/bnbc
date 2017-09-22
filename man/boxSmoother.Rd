@@ -2,28 +2,34 @@
 \alias{boxSmoother}
 \docType{data}
 \title{
-  %%   ~~ data name/kind ... ~~
-  boxSmoother
+  Using Box Smoother
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+  This function applies a square smoothing kernel of radius \code{h} to
+  all contact matrices in a ContactGroup object.
 }
-\usage{data("boxSmoother")}
-\format{
-  The format is:
- chr "boxSmoother"
+\usage{boxSmoother(cg, h, mc.cores)}
+
+\arguments{
+  \item{cg}{A ContactGroup object.}
+  \item{h}{The desired smoother radius.  This is an integer.}
+  \item{mc.cores}{The number of cores to be used.}
 }
+
+\value{
+  A ContactGroup object is returned that contains the smoothed matrices.
+}
+
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
+  This method applies a square smoothing kernel of radius \code{h} to
+  all contact matrices in a ContactGroup object.  Specifying radius
+  \code{h} implies that the width of the kernel is \eqn{2*h + 1} matrix cells.
 }
 \examples{
-data(boxSmoother)
-## maybe str(boxSmoother) ; plot(boxSmoother) ...
+data(chr22)
+chr22.smooth <- boxSmoother(chr22, h=5, mc.core=1)
+}
+\seealso{
+  \link{ContactGroup}
 }
 \keyword{datasets}
