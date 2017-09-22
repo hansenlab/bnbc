@@ -5,11 +5,6 @@
 ##     se2
 ## }
 
-make.sym <- function(mat){
-    mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
-    mat
-}
-
 bnbc <- function(cg, batch, threshold=NULL, step=NULL,
                   qn=TRUE, nbands=NULL, mod=NULL,
                   mean.only=FALSE, tol=5, bstart=2){
@@ -38,6 +33,10 @@ bnbc <- function(cg, batch, threshold=NULL, step=NULL,
         tacts <- updateBand(tact_list=tacts,
                             idx=getBandIdx(nrow(tacts[[1]]), ii)-1,
                             band=mat)
+    }
+    make.sym <- function(mat){
+        mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
+        mat
     }
     tacts <- lapply(tacts, make.sym)
     new.cg <- cg
