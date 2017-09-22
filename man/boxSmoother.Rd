@@ -1,6 +1,5 @@
 \name{boxSmoother}
 \alias{boxSmoother}
-\docType{data}
 \title{
   Using Box Smoother
 }
@@ -32,4 +31,4 @@ chr22.smooth <- boxSmoother(chr22, h=5, mc.core=1)
 \seealso{
   \link{ContactGroup}
 }
-\keyword{datasets}
+
