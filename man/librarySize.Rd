@@ -1,5 +1,5 @@
-\name{boxSmoother}
-\alias{boxSmoother}
+\name{librarySize}
+\alias{librarySize}
 \title{
   Get Library Sizes from ContactGroup 
 }
@@ -29,4 +29,5 @@ librarySize(chr22)
 }
 \seealso{
   \link{ContactGroup}
+  \link{logCPM}
 }
