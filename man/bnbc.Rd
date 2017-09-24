@@ -43,6 +43,12 @@
   corrected we set all elements to 0.
 
 }
+\references{
+  Johnson, W.E., Li, C. and Rabinovic, A. (2007)
+  Adjusting batch effects in microarray expression data using empirical
+  Bayes methods.
+  \emph{Biostatistics}, \bold{8}.
+}
 
 \examples{
 data(chr22)
