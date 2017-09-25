@@ -56,7 +56,13 @@ ContactGroup(rowData, contacts, colData)
       \code{value} is expected to be a GenomicRanges object.}
     \item{show}{\code{signature(object = "ContactGroup")}: Method to
       display summary information about a ContactGroup: the number of
-      bins, the width of the bins and the number of samples.} 
+      bins, the width of the bins and the number of samples.}
+    \item{librarySize}{\code{signature(x = "ContactGroup")}: Method to
+      compute the library size of each contact matrix in \code{x}.
+      Library size is defined to be the sum of the upper triangle of a
+      contact matrix.}
+    \item{logCPM}{\code{signature(x = "ContactGroup")}: Method to
+      transform each contact matrix to logCPM scale.}
   }
 }
 \section{Utilities}{
@@ -64,8 +70,19 @@ ContactGroup(rowData, contacts, colData)
     \item{}{\code{contacts(x)}, \code{contacts(x) <- value}: Method to
       extract the list of contact matrices from a
       ContactGroup. \code{value} is expected to be a list object.}
+    \item{distanceIdx}{\code{signature(cg = "ContactGroup",
+        threshold="ANY", step="ANY")}: Method to identify which matrix bands
+      are no more than \code{threshold} bins apart, where each bin
+      represents \code{step} base pairs.}
   }
 }
+\references{
+  Law, C.W., Chen, Y., Shi, W. and Smyth G.K. (2014)
+  voom: Precision weights unlock linear model analysis tools for RNA-seq read counts.
+  \emph{Genome Biol.}, \bold{15}.
+}
+
+
 \examples{
 data(chr22)
 
@@ -82,5 +99,12 @@ chr22
 
 cl <- contacts(chr22)
 contacts(chr22) <- cl
+
+d.idx <- distanceIdx(chr22, 1e7, 4e4)
+
+libs <- librarySize(chr22)
+
+chr22.cpm <- logCPM(chr22)
+
 }
 \keyword{classes}

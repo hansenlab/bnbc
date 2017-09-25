@@ -1,4 +1,4 @@
-\name{smoothing}
+\name{groupZeros}
 \alias{getGroupZeros}
 \alias{dropGropuZeros}
 \title{

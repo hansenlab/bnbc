@@ -38,7 +38,7 @@
 data(chr22)
 tact.1 <- contacts(chr22)[[1]]
 b2 <- band(tact.1, 2)
-tact.1 <- band(tact.1, 2, b2)
+band(tact.1, 2) <- b2
 }
 \seealso{
   \link{ContactGroup}
