@@ -1,28 +1,30 @@
 \name{boxSmoother}
 \alias{boxSmoother}
-\docType{data}
+\alias{gaussSmoother}
 \title{
-%%   ~~ data name/kind ... ~~
+  2D smoothers for Hi-C contact matrices.
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+  2D smoothers for Hi-C contact matrices.
 }
-\usage{data("boxSmoother")}
-\format{
-  The format is:
- chr "boxSmoother"
+\usage{
+boxSmoother(cg, h, mc.cores=1)
+gaussSmoother(cg, radius=3, sigma=0.5)
 }
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+\arguments{
+  \item{cg}{}
+  \item{h}{}
+  \item{mc.cores}{}
+  \item{radius}{}
+  \item{mc.sigma}{}
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+\details{}
+\value{
+  An object of class \code{ContactGroup}.
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
-data(boxSmoother)
-## maybe str(boxSmoother) ; plot(boxSmoother) ...
+data(chr22)
+chr22 <- boxSmoother(chr22, h = 5)
 }
-\keyword{datasets}
