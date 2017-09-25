@@ -117,9 +117,6 @@ band <- function(mat, band.no){
 ## use should occur after !is.null(cg$g0s) test
 dropGroupZeros <- function(cg, g0s){
     stopifnot(is(cg, "ContactGroup"))
-    cg$g0s <- rowData(cg)
-    mcols(cg$g0s)$kept <- TRUE
-    mcols(cg$g0s)$kept[g0s] <- FALSE
     cg <- cg[-g0s]
     cg
 }
