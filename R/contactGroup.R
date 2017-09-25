@@ -76,21 +76,16 @@ setMethod("dim", signature(x = "ContactGroup"),
 
 setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
           function(x, i, j, ...) {
-           x@rowData <- x@rowData[i]
-           x@contacts <- lapply(x@contacts[j], function(xx){
-               return(xx[i, i, drop = FALSE]) })
-           x@colData <- x@colData[j,]
-           x
+    if (!missing(i)) {
+        x@rowData <- x@rowData[i]
+        x@contacts <- lapply(x@contacts[j], function(xx){
+            return(xx[i, i, drop = FALSE]) })
+    }
+    if(!missing(j)) {
+        x@colData <- x@colData[j,]
+    }
+    x
 })
-
-## setMethod("mcols", "ContactGroup",
-##           function(x, use.mcols = FALSE, ...){
-##               mcols(rowData(x))
-##           })
-## setMethod("ncol", signature(x = "ContactGroup"),
-##           function(x) {
-##     ncol(contacts(x)[[1]])
-## })
 
 setMethod("findOverlaps",
 signature(query = "ContactGroup", subject = "GenomicRanges"),
@@ -102,28 +97,6 @@ function (query, subject, maxgap = 0L, minoverlap = 1L,
                  type = match.arg(type), select = match.arg(select),
                  ignore.strand = ignore.strand, ...)
 })
-
-## setMethod("findOverlaps",
-## signature(query = "ContactGroup", subject = "CollapsedVCF"),
-## function (query, subject, maxgap = 0L, minoverlap = 1L,
-##           type = c("any", "start", "end", "within", "equal"),
-##           select = c("all", "first"), ignore.strand = FALSE, ...) {
-##     findOverlaps(query = rowData(query), subject = granges(subject),
-##                  maxgap = maxgap, minoverlap = minoverlap,
-##                  type = match.arg(type), select = match.arg(select),
-##                  ignore.strand = ignore.strand, ...)
-## })
-
-## setMethod("findOverlaps",
-## signature(query = "CollapsedVCF", subject = "ContactGroup"),
-## function (query, subject, maxgap = 0L, minoverlap = 1L,
-##           type = c("any", "start", "end", "within", "equal"),
-##           select = c("all", "first"), ignore.strand = FALSE, ...) {
-##     findOverlaps(query = granges(query), subject = rowData(subject),
-##                  maxgap = maxgap, minoverlap = minoverlap,
-##                  type = match.arg(type), select = match.arg(select),
-##                  ignore.strand = ignore.strand, ...)
-## })
 
 setMethod("findOverlaps",
 signature(query = "ContactGroup", subject = "ContactGroup"),
