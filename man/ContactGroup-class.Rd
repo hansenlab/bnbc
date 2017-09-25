@@ -12,6 +12,7 @@
 \alias{ContactGroup}
 \alias{contacts}
 \alias{contacts<-}
+\alias{distanceIdx}
 \alias{librarySize}
 \alias{logCPM}
 
