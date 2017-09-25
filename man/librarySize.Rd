@@ -7,10 +7,10 @@
   This function computes the library size of each contact matrix in a
   ContactGroup (see \code{Details}).
 }
-\usage{librarySize(cg)}
+\usage{librarySize(x)}
 
 \arguments{
-  \item{cg}{A ContactGroup object.}
+  \item{x}{A ContactGroup object.}
 }
 
 \value{

@@ -24,6 +24,7 @@ setValidity("ContactGroup", function(object) {
 })
 
 ContactGroup <- function(rowData, contacts, colData){
+    ## FIXME: check that the constructor returns a valid object when called as ContactGroup()
     out <- new("ContactGroup", rowData = rowData, contacts = contacts, colData = colData)
     out
 }

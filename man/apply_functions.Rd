@@ -1,4 +1,4 @@
-\name{apply}
+\name{cgApply}
 \alias{cgApply}
 \alias{cgBandApply}
 \title{
@@ -7,18 +7,9 @@
 \description{
   These functions are apply-type functions for ContactGroup objects.
 }
-\section{Methods}{
-  In the code snippets below, \code{cg} is a ContactGroup object.
-  \describe{
-    \item{}{
-      \code{cgApply(cg, FUN, mc.cores = 1, ...)}:
-      Apply a function \code{FUN} to all contact matrices.
-    }
-    \item{}{
-      \code{cgBandApply(cg, FUN, nbands = NULL, mc.cores = 1, bstart =
-        2, ...)}:
-      Apply a function \code{FUN} to all bands in all contact matrices.
-  }
+\usage{
+cgApply(cg, FUN, mc.cores=1, ...)
+cgBandApply(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...)
 }
 \arguments{
   \item{cg}{A ContactGroup object.}
@@ -28,13 +19,12 @@
     Only applicable to \code{cgBandApply}.}
   \item{nbands}{The last band to apply a function to.  Default is
     \code{nrow(cg) - 1}. Only applicable to \code{cgBandApply}.}
+  \item{...}{Passed to \code{mclapply}.}
 }
-
 \value{
   For \code{cgApply}, a ContactGroup object.  For \code{cgBandApply}, a
   list whose elements are the returned value of \code{FUN}.
 }
-
 \details{
   These methods make it easy to apply functions to either all contact
   matrices or a set of bands in all contact matrices.  Both methods

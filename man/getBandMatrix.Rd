@@ -6,7 +6,7 @@
 \description{
   Get band matrix from ContactGroup.
 }
-\usage{getBandMatrix(cg, i)}
+\usage{getBandMatrix(cg, band.no=1)}
 
 \arguments{
   \item{cg}{A ContactGroup object.}
