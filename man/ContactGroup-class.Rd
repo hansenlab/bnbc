@@ -85,27 +85,27 @@ ContactGroup(rowData, contacts, colData)
 
 
 \examples{
-data(chr22)
+data(cgEx)
 
-chr22[1,]
-chr22[,1]
+cgEx[1,]
+cgEx[,1]
 
-cd <- colData(chr22)
-colData(chr22) <- cd
+cd <- colData(cgEx)
+colData(cgEx) <- cd
 
-gr <- rowData(chr22)
-rowData(chr22) <- gr
+gr <- rowData(cgEx)
+rowData(cgEx) <- gr
 
-chr22
+cgEx
 
-cl <- contacts(chr22)
-contacts(chr22) <- cl
+cl <- contacts(cgEx)
+contacts(cgEx) <- cl
 
-d.idx <- distanceIdx(chr22, 1e7, 4e4)
+d.idx <- distanceIdx(cgEx, 1e7, 4e4)
 
-libs <- librarySize(chr22)
+libs <- librarySize(cgEx)
 
-chr22.cpm <- logCPM(chr22)
+cgEx.cpm <- logCPM(cgEx)
 
 }
 \keyword{classes}

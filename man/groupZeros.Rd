@@ -36,9 +36,9 @@
   compartment status and so should be removed for many analyses.
 }
 \examples{
-data(chr22)
-g0s <- getGroupZeros(chr22)
-chr22 <- dropGroupZeros(chr22, g0s)
+data(cgEx)
+g0s <- getGroupZeros(cgEx)
+cgEx <- dropGroupZeros(cgEx, g0s)
 }
 \seealso{
   \link{ContactGroup}

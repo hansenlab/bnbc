@@ -26,8 +26,8 @@
   returned band matrix is of dimension \code{r} x \code{k}.
 }
 \examples{
-data(chr22)
-b2 <- getBandMatrix(chr22, 2)
+data(cgEx)
+b2 <- getBandMatrix(cgEx, 2)
 }
 \seealso{
   \link{ContactGroup}

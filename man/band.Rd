@@ -36,8 +36,8 @@
   A matrix band is the set of elements in a matrix from a specific off-diagonal.
 }
 \examples{
-data(chr22)
-tact.1 <- contacts(chr22)[[1]]
+data(cgEx)
+tact.1 <- contacts(cgEx)[[1]]
 b2 <- band(tact.1, 2)
 band(tact.1, 2) <- b2
 }

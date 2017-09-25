@@ -24,8 +24,8 @@
   directly may find this useful
 }
 \examples{
-data(chr22)
-b2.idx <- getBandIdx(nrow(chr22), 2)
+data(cgEx)
+b2.idx <- getBandIdx(nrow(cgEx), 2)
 }
 \seealso{
   \link{ContactGroup}

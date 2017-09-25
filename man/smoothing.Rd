@@ -45,9 +45,9 @@
   all contact matrices in a ContactGroup object.
 }
 \examples{
-data(chr22)
-chr22.smooth <- boxSmoother(chr22, h=5, mc.cores=1)
-chr22.smooth <- gaussSmoother(chr22, radius=3, sigma=0.5, mc.cores=1)
+data(cgEx)
+cgEx.smooth <- boxSmoother(cgEx, h=5, mc.cores=1)
+cgEx.smooth <- gaussSmoother(cgEx, radius=3, sigma=0.5, mc.cores=1)
 }
 \seealso{
   \link{ContactGroup}

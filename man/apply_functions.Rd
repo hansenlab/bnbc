@@ -37,9 +37,9 @@ cgBandApply(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...)
   last band.
 }
 \examples{
-data(chr22)
-chr22.1 <- cgApply(chr22, FUN=function(xx){ xx + 1 })
-band.matrix.list <- cgBandApply(chr22, FUN=getBandMatrix, bstart=2, nbands=5)
+data(cgEx)
+cgEx.1 <- cgApply(cgEx, FUN=function(xx){ xx + 1 })
+band.matrix.list <- cgBandApply(cgEx, FUN=getBandMatrix, bstart=2, nbands=5)
 }
 \seealso{
   \link{ContactGroup}
