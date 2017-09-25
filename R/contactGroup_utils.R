@@ -14,9 +14,9 @@ librarySize <- function(x) {
     })
 }
 
-gaussSmoother <- function(cg, radius=3, sigma=0.5) {
+gaussSmoother <- function(cg, radius=3, sigma=0.5, mc.cores=1) {
     stopifnot(is(cg, "ContactGroup"))
-    cgApply(cg, gblur, sigma=sigma, radius=radius, boundary="replicate")
+    cgApply(cg, gblur, mc.cores=mc.cores, sigma=sigma, radius=radius, boundary="replicate")
 }
 
 boxSmoother <- function(cg, h, mc.cores=1){
