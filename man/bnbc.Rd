@@ -37,6 +37,16 @@
 }
 
 \details{
+  Normalization and batch correction is performed in a band-wise manner,
+  correcting all samples' observations of one matrix off-diagonal (which
+  we refer to as a matrix "band") at a time.  For each matrix band, we
+  collect all samples' observations into a single matrix.  We then
+  apply quantile normalization to ensure distributional similarity
+  across samples.  Finally, we perform batch effect correction using
+  ComBat on this matrix.  Each samples' matrix band is then replaced
+  with its corrected version. We refer to this process of Band-Wise
+  Normalization and Batch Correction as BNBC.  
+  
   This function applies BNBC to the set of contact matrices and returns
   a ContactGroup object with matrix bands \code{bstart:nbands}
   corrected.  For those rows in the matrix bands  which cannot be
@@ -54,9 +64,12 @@
 data(cgEx)
 batches <- colData(cgEx)$Batch
 cgEx.cpm <- logCPM(cgEx)
-cgEx.bnbc <- bnbc(cgEx.cpm, batches, 1e7, 4e4, bstart=2, nbands=4)
+cgEx.smooth <- boxSmoother(cgEx, 5, mc.cores=1)
+cgEx.bnbc <- bnbc(cgEx.smooth, batches, 1e7, 4e4, bstart=2, nbands=4)
 }
 \seealso{
   \link{ContactGroup}
   \link{logCPM}
+  \link{boxSmoother}
+  \link{band}
 }
