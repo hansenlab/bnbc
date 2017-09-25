@@ -29,10 +29,10 @@ library(bnbc)
 # Some code
 
 ```{r}
-data(chr22)
-chr22.cpm <- logCPM(chr22)
-chr22.smooth <- boxSmoother(chr22.cpm, h=5)
-chr22.bnbc <- bnbc(chr22.smooth, colData(chr22.smooth)$Batch, 1e7, 40000, nbands=10)
+data(cgEx)
+cgEx.cpm <- logCPM(cgEx)
+cgEx.smooth <- boxSmoother(cgEx.cpm, h=5)
+cgEx.bnbc <- bnbc(cgEx.smooth, colData(cgEx.smooth)$Batch, 1e7, 40000, nbands=10)
 ```
 
 
