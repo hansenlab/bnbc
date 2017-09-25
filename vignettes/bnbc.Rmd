@@ -16,7 +16,7 @@ output:
 
 # Introduction
 
-The `r Biocpckg("bnbc")` package provides functionality to perform normalization and batch correction across samples on data obtained from Hi-C [@HiCassay] experiments.
+The `bnbc` package provides functionality to perform normalization and batch correction across samples on data obtained from Hi-C [@HiCassay] experiments.
 
 In this package we implement tools for general subsetting of and data extraction from sets of Hi-C contact matrices, as well as smoothing of contact matrices, cross-sample normalization and cross-sample batch effect correction methods.
 
@@ -52,7 +52,7 @@ Creating a `ContactGroup` object requires specifying the 3 slots above:
 
 ```{r create}
 data(cgEx)
-cgEx <- ContactGroup(rowData=rowData(cgEx), contacts=contacts(cgEx), colData=colData(cgEx)
+cgEx <- ContactGroup(rowData=rowData(cgEx), contacts=contacts(cgEx), colData=colData(cgEx))
 ```
 
 Note that in this example, we used the accessor methods for each of these slots; there are also corresponding 'setter' methods, such as `rowData(cgEx)<-`. 
@@ -98,7 +98,7 @@ BNBC operates on each matrix band separately.  For each matrix band $k$, we extr
 Here we will use `bnbc` to do batch correction on the first 10 matrix bands, beginning with the second matrix band and ending on the eleventh.
 
 ```{r bnbc}
-cgEx.bnbc <- bnbc(cgEx.smooth, batch=colData(cgEx.smooth)$Batch, threshol=1e7, threshold=4e4, nbands=11)
+cgEx.bnbc <- bnbc(cgEx.smooth, batch=colData(cgEx.smooth)$Batch, threshold=1e7, step=4e4, nbands=11)
 ```
 
 # Sessioninfo
