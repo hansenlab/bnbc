@@ -1,5 +1,5 @@
 Package: bnbc
-Version: 0.0.3
+Version: 0.0.5
 Title: Bandwise normalization and batch correction of Hi-C data
 Description: Tools to normalize (several) Hi-C data from replicates.
 Authors@R: c(

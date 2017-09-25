@@ -1,0 +1,58 @@
+\name{apply}
+\alias{cgApply}
+\alias{cgBandApply}
+\title{
+  Apply-type methods
+}
+\description{
+  These functions are apply-type functions for ContactGroup objects.
+}
+\section{Methods}{
+  In the code snippets below, \code{cg} is a ContactGroup object.
+  \describe{
+    \item{}{
+      \code{cgApply(cg, FUN, mc.cores = 1, ...)}:
+      Apply a function \code{FUN} to all contact matrices.
+    }
+    \item{}{
+      \code{cgBandApply(cg, FUN, nbands = NULL, mc.cores = 1, bstart =
+        2, ...)}:
+      Apply a function \code{FUN} to all bands in all contact matrices.
+  }
+}
+\arguments{
+  \item{cg}{A ContactGroup object.}
+  \item{FUN}{A function to be applied.}
+  \item{mc.cores}{The number of cores to be used.  Defaults to 1}
+  \item{bstart}{The first band to apply a function to.  Defaults to 2.
+    Only applicable to \code{cgBandApply}.}
+  \item{nbands}{The last band to apply a function to.  Default is
+    \code{nrow(cg) - 1}. Only applicable to \code{cgBandApply}.}
+}
+
+\value{
+  For \code{cgApply}, a ContactGroup object.  For \code{cgBandApply}, a
+  list whose elements are the returned value of \code{FUN}.
+}
+
+\details{
+  These methods make it easy to apply functions to either all contact
+  matrices or a set of bands in all contact matrices.  Both methods
+  accept a function \code{FUN}.  For \code{cgApply}, the first argument
+  should be \code{cg}, the contact group itself.  For
+  \code{cgBandApply}, the first argument should also be \code{cg}, and
+  the second argument should be a specific band number.  Additionally,
+  the bands to be iterated are specified through \code{bstart:nbands}: \code{bstart}
+  indicates the starting band, and \code{nbands} indicates the
+  last band.
+}
+\examples{
+data(chr22)
+chr22.1 <- cgApply(chr22, FUN=function(xx){ xx + 1 })
+band.matrix.list <- cgBandApply(chr22, FUN=getBandMatrix, bstart=2, nbands=5)
+}
+\seealso{
+  \link{ContactGroup}
+  \link{getBandMatrix}
+}
+
