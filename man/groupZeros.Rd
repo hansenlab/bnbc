@@ -1,6 +1,6 @@
 \name{groupZeros}
 \alias{getGroupZeros}
-\alias{dropGropuZeros}
+\alias{dropGroupZeros}
 \title{
   Group Zero Operations
 }

@@ -16,7 +16,19 @@ output:
 
 # Introduction
 
-Something. Cite [@HiCassay]
+The `r Biocpckg("bnbc")` package provides functionality to perform normalization and batch correction across samples on data obtained from Hi-C [@HiCassay] experiments.
+
+In this package we implement tools for general subsetting of and data extraction from sets of Hi-C contact matrices, as well as smoothing of contact matrices, cross-sample normalization and cross-sample batch effect correction methods.
+
+`bnbc` expects as input a `GRanges` object representing the genome assayed, with individual ranges having the width that is equal to the bin size used to partition the genome, a list of contact matrices, and a `DataFrame` object containing sample-level covariates (i.e. gender, date of processing, etc).
+
+# Terminology
+
+It is well appreciated that Hi-C contact matrices exhibit an exponential decay in observed number of contacts as a function of the distance between the pair of interacting loci. In this work we operate, as has recently been done (i.e. [@HiCRep]), on the set of all loci interacting at a specific distance, one chromosome at a time. For a given distance $k$, the relevant set of loci are listed in each contact matrix as the entries comprising the $k$-th matrix diagonal (with the main diagonal being referred to as the first diagonal). We refer to these diagonals as matrix "bands".
+
+## Citing bnbc
+
+Please cite our $biorXiv$ paper SOMETHING.
 
 # Dependencies
 
@@ -26,12 +38,52 @@ This document has the following dependencies
 library(bnbc)
 ```
 
-# Some code
+# bnbc class
+
+`bnbc` uses the `ContactGroup` class to represent the set of contact matrices for a given set of interactions from a given of experiment. The class has 3 slots:
+
+- `rowData`: a `GRanges` object that has 1 element for each bin of the partitioned genome.
+- `colData`: a `DataFrame` object that contains information on each sample (i.e. gender).
+- `contacts`: a list of contact matrices.
+
+In our work, we have peformed analyses 1 chromosome at a time and so have represented the genome-wide Hi-C experiment in a set of 22 `ContactGroups`, one for each autosomal chromosome (we ignored the X chromosome and also all inter-chromosomal interactions). However, we only require that contact matrices have the same number of rows and columns as there are ranges in the `rowData` slot.
+
+Creating a `ContactGroup` object requires specifying the 3 slots above:
+
+```{r create}
+data(cgEx)
+cgEx <- ContactGroup(rowData=rowData(cgEx), contacts=contacts(cgEx), colData=colData(cgEx)
+```
+
+Note that in this example, we used the accessor methods for each of these slots; there are also corresponding 'setter' methods, such as `rowData(cgEx)<-`. 
+
+Printing a `ContactGroup` object gives the number of bins represented by the `rowData` slot, the width of the bin in terms of genomic distances (i.e. 100kb) and the number of samples:
+
+```{r print}
+cgEx
+```
+
+We provide setter and getter methods for manipulating individual matrix bands for contact matrices as well.  For example, manipulating the first sample's 2nd band matrix can be done as follows.
+
+```{r band_example}
+mat.1 <- contacs(cgEx)[[1]]
+mat.1[1000:1005, 1000:1005]
+b1 <- band(mat=mat.1, band.no=2)
+band(mat=mat.1, band.no=2) <- b1 + 1
+mat.1[1000:1005, 1000:1005]
+```
+
+# Per-Sample Adjustments
+
+
+
 
 ```{r}
-data(cgEx)
+## library size adjust contact matrices
 cgEx.cpm <- logCPM(cgEx)
+## smooth contact matrices
 cgEx.smooth <- boxSmoother(cgEx.cpm, h=5)
+## bnbc the first 10 matrix bands
 cgEx.bnbc <- bnbc(cgEx.smooth, colData(cgEx.smooth)$Batch, 1e7, 40000, nbands=10)
 ```
 
