@@ -66,29 +66,40 @@ cgEx
 We provide setter and getter methods for manipulating individual matrix bands for contact matrices as well.  For example, manipulating the first sample's 2nd band matrix can be done as follows.
 
 ```{r band_example}
-mat.1 <- contacs(cgEx)[[1]]
+mat.1 <- contacts(cgEx)[[1]]
 mat.1[1000:1005, 1000:1005]
 b1 <- band(mat=mat.1, band.no=2)
 band(mat=mat.1, band.no=2) <- b1 + 1
 mat.1[1000:1005, 1000:1005]
 ```
 
+In this example, the main diagonal of the contact matrix is also the main diagonal of the printed example above.  Similarly, band number two, which is also the first off-diagonal, is also the first off-diagonal of the printed example.  As can be seen from the printed example, updating a matrix band is a symmetric operation, and updated the first off-diagonal in both the upper and lower triangles of the matrix.
+
 # Per-Sample Adjustments
 
+To adjust for differences in depth sequencing, we first apply the `logCPM` transform [@voom] to each contact matrix.  This transformation divides each contact matrix by the sum of the upper triangle of that matrix (adding 0.5 to each matrix cell and 1 to sum of the upper triangle), scales the resulting matrix by $10^6$ and finally takes the log of the scaled matrix.
 
-
-
-```{r}
-## library size adjust contact matrices
+```{r logcpm}
 cgEx.cpm <- logCPM(cgEx)
-## smooth contact matrices
-cgEx.smooth <- boxSmoother(cgEx.cpm, h=5)
-## bnbc the first 10 matrix bands
-cgEx.bnbc <- bnbc(cgEx.smooth, colData(cgEx.smooth)$Batch, 1e7, 40000, nbands=10)
 ```
 
+Additionally, we smooth each contact matrix with a square smoothing kernel to reduce artifacts of the choice of bin width.  We support both box and Gaussian smoothers.
 
+```{r smoothing}
+cgEx.smooth <- boxSmoother(cgEx.cpm, h=5)
+## or
+## cgEx.smooth <- gaussSmoother(cgEx.cpm, radius=3, sigma=4)
+```
 
+# Cross Sample Normalization
+
+BNBC operates on each matrix band separately.  For each matrix band $k$, we extract each sample's observation on that band and form a matrix $M$ from those bands;  if band $k$ has $d$ entries, then after `logCPM` transformation,  $M \in \mathbb{R}^{n \times d}$.  For each such matrix, we first apply quantile normalization [@QN] to correct for distributional differences, and then ComBat [@ComBat] to correct for batch effects.
+
+Here we will use `bnbc` to do batch correction on the first 10 matrix bands, beginning with the second matrix band and ending on the eleventh.
+
+```{r bnbc}
+cgEx.bnbc <- bnbc(cgEx.smooth, batch=colData(cgEx.smooth)$Batch, threshol=1e7, threshold=4e4, nbands=11)
+```
 
 # Sessioninfo
 
