@@ -1,5 +1,6 @@
 \name{band}
 \alias{band}
+\alias{band<-}
 \title{
   Get Band  
 }

@@ -52,9 +52,11 @@
 
 \examples{
 data(chr22)
-batches <- colData(chr22)$R1_library_prep_date
-chr22.bnbc <- bnbc(chr22, batches, 1e7, 4e4, bstart=2, nbands=4)
+batches <- colData(chr22)$Batch
+chr22.cpm <- logCPM(chr22)
+chr22.bnbc <- bnbc(chr22.cpm, batches, 1e7, 4e4, bstart=2, nbands=4)
 }
 \seealso{
   \link{ContactGroup}
+  \link{logCPM}
 }
