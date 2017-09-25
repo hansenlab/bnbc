@@ -77,6 +77,11 @@ ContactGroup(rowData, contacts, colData)
       represents \code{step} base pairs.}
   }
 }
+
+\value{
+  A ContactGroup object.
+}
+
 \references{
   Law, C.W., Chen, Y., Shi, W. and Smyth G.K. (2014)
   voom: Precision weights unlock linear model analysis tools for RNA-seq read counts.
