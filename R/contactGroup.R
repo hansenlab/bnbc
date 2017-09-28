@@ -81,7 +81,8 @@ setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
             return(xx[i, i, drop = FALSE]) })
     }
     if(!missing(j)) {
-        x@colData <- x@colData[j,]
+      x@colData <- x@colData[j,]
+      x@contacts <- x@contacts[j]
     }
     x
 })
