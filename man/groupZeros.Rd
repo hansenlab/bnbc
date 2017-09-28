@@ -8,17 +8,9 @@
   These functions find and remove rows in the set of contact matrices
   for which all elements in the row are 0 in all samples.
 }
-\section{Methods}{
-  In the code snippets below, \code{cg} is a ContactGroup object.
-  \describe{
-    \item{}{
-      \code{getGroupZeros(cg)}:
-      Find group zeros.
-    }
-    \item{}{
-      \code{dropGroupZeros(cg, g0s)}:
-      Drop rows identified by \code{getGroupZeros}}
-  }
+\usage{
+getGroupZeros(cg)
+dropGroupZeros(cg, g0s)
 }
 \arguments{
   \item{cg}{A ContactGroup object.}

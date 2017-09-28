@@ -68,8 +68,8 @@ cgEx.smooth <- boxSmoother(cgEx, 5, mc.cores=1)
 cgEx.bnbc <- bnbc(cgEx.smooth, batches, 1e7, 4e4, bstart=2, nbands=4)
 }
 \seealso{
-  \link{ContactGroup}
-  \link{logCPM}
-  \link{boxSmoother}
+  \link{ContactGroup},
+  \link{logCPM},
+  \link{boxSmoother},
   \link{band}
 }

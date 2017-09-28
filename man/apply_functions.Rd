@@ -42,7 +42,7 @@ cgEx.1 <- cgApply(cgEx, FUN=function(xx){ xx + 1 })
 band.matrix.list <- cgBandApply(cgEx, FUN=getBandMatrix, bstart=2, nbands=5)
 }
 \seealso{
-  \link{ContactGroup}
+  \link{ContactGroup},
   \link{getBandMatrix}
 }
 

@@ -30,8 +30,7 @@ data(cgEx)
 b2 <- getBandMatrix(cgEx, 2)
 }
 \seealso{
-  \link{ContactGroup}
-  \link{getBandIdx}
+  \link{ContactGroup},
+  \link{getBandIdx},
   \link{band}
-  
 }

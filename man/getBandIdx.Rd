@@ -28,8 +28,8 @@ data(cgEx)
 b2.idx <- getBandIdx(nrow(cgEx), 2)
 }
 \seealso{
-  \link{ContactGroup}
-  \link{getBandMatrix}
+  \link{ContactGroup},
+  \link{getBandMatrix},
   \link{band}
   
 }

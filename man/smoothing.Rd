@@ -8,17 +8,9 @@
   These functions apply a smoothing kernel to all contact matrices in a
   ContactGroup object.
 }
-\section{Methods}{
-  In the code snippets below, \code{cg} is a ContactGroup object.
-  \describe{
-    \item{}{
-      \code{boxSmoother(cg, h, mc.cores)}:
-      Apply a box smoother.
-    }
-    \item{}{
-      \code{gaussSmoother(cg, radius, sigma, mc.cores)}:
-      Apply a Gaussian smoother}
-  }
+\usage{
+boxSmoother(cg, h, mc.cores)
+gaussSmoother(cg, radius, sigma, mc.cores)
 }
 \arguments{
   \item{cg}{A ContactGroup object.}

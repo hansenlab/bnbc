@@ -8,16 +8,9 @@
   Get or set band from matrix.
 }
 
-\section{Methods}{
-  \describe{
-    \item{band}{\code{signature(x = "matrix", band.no = "ANY")}:}{
-      Extracts band from matrix.
-    }
-    \item{band<-}{\code{signature(x = "matrix", band.no = "ANY", value =
-        "ANY")}:}{
-      Set the value of a matrix band to \code{value}.
-    }
-  }
+\usage{
+band(x, band.no)
+band(x, band.no) <- value
 }
 
 \arguments{
@@ -42,8 +35,8 @@ b2 <- band(tact.1, 2)
 band(tact.1, 2) <- b2
 }
 \seealso{
-  \link{ContactGroup}
-  \link{getBandIdx}
+  \link{ContactGroup},
+  \link{getBandIdx},
   \link{band}
   
 }
