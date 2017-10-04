@@ -24,8 +24,8 @@ setValidity("ContactGroup", function(object) {
 })
 
 ContactGroup <- function(rowData, contacts, colData){
-  out <- new("ContactGroup", rowData = rowData, contacts = contacts, colData = colData)
-  out
+    out <- new("ContactGroup", rowData = rowData, contacts = contacts, colData = colData)
+    out
 }
 
 setMethod("show", signature(object = "ContactGroup"),
@@ -81,16 +81,16 @@ setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
             return(xx[i, i, drop = FALSE]) })
     }
     if(!missing(j)) {
-      x@colData <- x@colData[j,]
-      x@contacts <- x@contacts[j]
+        x@colData <- x@colData[j,]
+        x@contacts <- x@contacts[j]
     }
     x
 })
 
 setMethod("findOverlaps",
-signature(query = "ContactGroup", subject = "GenomicRanges"),
-function (query, subject, maxgap = 0L, minoverlap = 1L,
-          type = c("any", "start", "end", "within", "equal"),
+          signature(query = "ContactGroup", subject = "GenomicRanges"),
+          function (query, subject, maxgap = 0L, minoverlap = 1L,
+                    type = c("any", "start", "end", "within", "equal"),
           select = c("all", "first"), ignore.strand = FALSE, ...) {
     findOverlaps(query = rowData(query), subject = subject,
                  maxgap = maxgap, minoverlap = minoverlap,
@@ -99,10 +99,10 @@ function (query, subject, maxgap = 0L, minoverlap = 1L,
 })
 
 setMethod("findOverlaps",
-signature(query = "ContactGroup", subject = "ContactGroup"),
-function (query, subject, maxgap = 0L, minoverlap = 1L,
-          type = c("any", "start", "end", "within", "equal"),
-          select = c("all", "first"), ignore.strand = FALSE, ...) {
+          signature(query = "ContactGroup", subject = "ContactGroup"),
+          function (query, subject, maxgap = 0L, minoverlap = 1L,
+                    type = c("any", "start", "end", "within", "equal"),
+                    select = c("all", "first"), ignore.strand = FALSE, ...) {
     findOverlaps(query = rowData(query), subject = rowData(subject),
                  maxgap = maxgap, minoverlap = minoverlap,
                  type = match.arg(type), select = match.arg(select),
@@ -115,8 +115,8 @@ function (query, subject, maxgap = 0L, minoverlap = 1L,
           type = c("any", "start", "end", "within", "equal"),
           select = c("all", "first"), ignore.strand = FALSE, ...) {
     findOverlaps(query = query, subject = rowData(subject),
-                           maxgap = maxgap, minoverlap = minoverlap,
+                 maxgap = maxgap, minoverlap = minoverlap,
                  type = match.arg(type), select = match.arg(select),
-                           ignore.strand = ignore.strand, ...)
+                 ignore.strand = ignore.strand, ...)
 })
 

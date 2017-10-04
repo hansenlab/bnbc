@@ -38,12 +38,13 @@ ContactGroup(rowData, contacts, colData)
   In the code snippets below, \code{x} is a ContactGroup object.
   \describe{
     \item{[}{\code{signature(x = "ContactGroup", i = "ANY", j = "ANY",
-	drop = "ANY")}: Allows for subsetting the contact matrices
+      drop = "ANY")}: 
+      Allows for subsetting the contact matrices
       through use of \code{i} or of samples through \code{j}.}
     \item{colData}{\code{signature(x = "ContactGroup")}: Get
       sample-level information about samples in \code{x}}
     \item{colData<-}{\code{signature(x = "ContactGroup", value =
-	"DataFrame")}: Set sample-level information about samples in \code{x}.
+      "DataFrame")}: Set sample-level information about samples in \code{x}.
       \code{value} is expected to be a \code{DataFrame} object.} 
     \item{dim}{\code{signature(x = "ContactGroup")}: Obtain the
       dimensions of a ContactGroup.  Returns 2 values: one 

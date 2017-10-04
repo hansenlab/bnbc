@@ -9,12 +9,12 @@
 }
 
 \usage{
-band(x, band.no)
-band(x, band.no) <- value
+band(mat, band.no)
+band(mat, band.no) <- value
 }
 
 \arguments{
-  \item{x}{A matrix.}
+  \item{mat}{A matrix.}
   \item{band.no}{Integer specifying which matrix band.  \code{band.no} = 1 retrieves
     the main diagonal.}
   \item{value}{A scalar or vector equal in length to the matrix band.}
