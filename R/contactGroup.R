@@ -10,6 +10,13 @@ setValidity("ContactGroup", function(object) {
     if(!all(sapply(object@contacts, is.matrix)))
         txt <- contactTxt
     nrowcol <- sapply(object@contacts, dim)
+    ## special case of CG with no entries
+    ## nrowcol is empty list instead of 2d object
+    if (class(nrowcol) == "list"){
+      if (length(object@rowData) == 0 & nrow(object@colData) == 0){
+        return(txt)
+      }
+    }
     if(any(nrowcol[1,1] != nrowcol[,1]))
         txt <- contactTxt
     if(any(nrowcol[1,] != nrowcol[2,]))
@@ -23,7 +30,7 @@ setValidity("ContactGroup", function(object) {
     txt
 })
 
-ContactGroup <- function(rowData, contacts, colData){
+ContactGroup <- function(rowData=GRanges(), contacts=list(), colData=DataFrame()){
     out <- new("ContactGroup", rowData = rowData, contacts = contacts,
                colData = colData)
     out
@@ -33,8 +40,9 @@ setMethod("show", signature(object = "ContactGroup"),
           function(object) {
     cat("Object of class `ContactGroup` representing contact matrices with\n")
     cat(sprintf(" %s bins\n", length(rowData(object))))
+    xx <- round(mean(width(rowData(object))) / 1000)
     cat(sprintf(" %s kb average width per bin\n",
-                round(mean(width(rowData(object))) / 1000)))
+                ifelse(is.na(xx), 0, xx)))
     cat(sprintf(" %s samples\n", nrow(colData(object))))
     invisible(object)
 })
