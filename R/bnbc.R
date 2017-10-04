@@ -1,10 +1,3 @@
-## personSub <- function(se, persons){
-##     idx <- which(metadata(se)$people == persons)
-##     se2 <- se
-##     assay(se2, "tacts") <- assay(se2, "tacts")[,,idx]
-##     se2
-## }
-
 bnbc <- function(cg, batch, threshold=NULL, step=NULL,
                   qn=TRUE, nbands=NULL, mod=NULL,
                   mean.only=FALSE, tol=5, bstart=2){
@@ -23,11 +16,14 @@ bnbc <- function(cg, batch, threshold=NULL, step=NULL,
         }
         if(!mean.only){
             batchvars <- bandLevelBatchVars(mat, batch)
-            mat.good <- abs(rowMeans(mat)) > 0 & round(rowMeans(batchvars), tol)  > 0
+            mat.good <- abs(rowMeans(mat)) > 0 &
+                round(rowMeans(batchvars), tol)  > 0
         }
         tryCatch({
-        suppressMessages(mat[mat.good,] <- ComBat(mat[mat.good,], batch, mod=mod,
-                                                  mean.only=mean.only))
+            suppressMessages({
+                mat[mat.good,] <- ComBat(mat[mat.good,], batch, mod=mod,
+                                         mean.only=mean.only)
+            })
         }, error=function(e){ warning(paste0(ii, "\n")) })
         mat[!mat.good,] <- 0
         tacts <- updateBand(tact_list=tacts,

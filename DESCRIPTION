@@ -14,7 +14,8 @@ Depends:
 Suggests:
 	BiocStyle,
 	knitr,
-	rmarkdown
+	rmarkdown,
+        RUnit
 Imports:
 	Rcpp (>= 0.12.12),
 	IRanges,

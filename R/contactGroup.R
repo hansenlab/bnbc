@@ -24,7 +24,8 @@ setValidity("ContactGroup", function(object) {
 })
 
 ContactGroup <- function(rowData, contacts, colData){
-    out <- new("ContactGroup", rowData = rowData, contacts = contacts, colData = colData)
+    out <- new("ContactGroup", rowData = rowData, contacts = contacts,
+               colData = colData)
     out
 }
 
@@ -32,7 +33,8 @@ setMethod("show", signature(object = "ContactGroup"),
           function(object) {
     cat("Object of class `ContactGroup` representing contact matrices with\n")
     cat(sprintf(" %s bins\n", length(rowData(object))))
-    cat(sprintf(" %s kb average width per bin\n", round(mean(width(rowData(object))) / 1000)))
+    cat(sprintf(" %s kb average width per bin\n",
+                round(mean(width(rowData(object))) / 1000)))
     cat(sprintf(" %s samples\n", nrow(colData(object))))
     invisible(object)
 })
@@ -119,4 +121,3 @@ function (query, subject, maxgap = 0L, minoverlap = 1L,
                  type = match.arg(type), select = match.arg(select),
                  ignore.strand = ignore.strand, ...)
 })
-
