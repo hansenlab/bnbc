@@ -52,12 +52,22 @@
   corrected.  For those rows in the matrix bands  which cannot be
   corrected we set all elements to 0.
 
+  Very high bands contain little data in Hi-C experiments, and we don't
+  recommend to analyze those or apply this function to high bands, see
+  the \code{nbands} argument to the function.
+  
+  We recommend performing bnbc on contact matrices which have been
+  converted to log-CPM and smoothed, see the example.
 }
 \references{
-  Johnson, W.E., Li, C. and Rabinovic, A. (2007)
-  Adjusting batch effects in microarray expression data using empirical
-  Bayes methods.
-  \emph{Biostatistics}, \bold{8}.
+  Johnson, W.E., Li, C. and Rabinovic, A.
+  \emph{Adjusting batch effects in microarray expression data using empirical
+  Bayes methods.}
+  Biostatistics 2007, 8:118-127. \doi{10.1093/biostatistics/kxj037}
+
+  Fletez-Brant et al.
+  \emph{Distance-dependent between-sample normalization for Hi-C
+  experiments}. In preparation.
 }
 
 \examples{

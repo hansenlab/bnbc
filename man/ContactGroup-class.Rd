@@ -84,9 +84,9 @@ ContactGroup(rowData, contacts, colData)
 }
 
 \references{
-  Law, C.W., Chen, Y., Shi, W. and Smyth G.K. (2014)
-  voom: Precision weights unlock linear model analysis tools for RNA-seq read counts.
-  \emph{Genome Biol.}, \bold{15}.
+  Law, C.W., Chen, Y., Shi, W. and Smyth G.K.
+  \emph{voom: Precision weights unlock linear model analysis tools for RNA-seq read counts.}
+  Genome Biology 2014, 15:R29. \doi{10.1186/gb-2014-15-2-r29}.
 }
 
 

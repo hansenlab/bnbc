@@ -13,7 +13,9 @@ cgBandApply(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...)
 }
 \arguments{
   \item{cg}{A ContactGroup object.}
-  \item{FUN}{A function to be applied.}
+  \item{FUN}{A function to be applied. For \code{cgApply} this function
+    should operate on a square matrix. For \code{cgBandApply} this
+    function should operate on a band, ie. a vector (see \code{\link{band}}).}
   \item{mc.cores}{The number of cores to be used.  Defaults to 1}
   \item{bstart}{The first band to apply a function to.  Defaults to 2.
     Only applicable to \code{cgBandApply}.}
@@ -36,13 +38,14 @@ cgBandApply(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...)
   indicates the starting band, and \code{nbands} indicates the
   last band.
 }
+\seealso{
+  \code{\link{ContactGroup}},
+  \code{\link{getBandMatrix}},
+  \code{\link{band}}
+}
 \examples{
 data(cgEx)
 cgEx.1 <- cgApply(cgEx, FUN=function(xx){ xx + 1 })
 band.matrix.list <- cgBandApply(cgEx, FUN=getBandMatrix, bstart=2, nbands=5)
-}
-\seealso{
-  \link{ContactGroup},
-  \link{getBandMatrix}
 }
 

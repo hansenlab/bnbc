@@ -22,21 +22,26 @@ band(mat, band.no) <- value
 }
 
 \value{
-  A matrix band.
+  A matrix band in the form of a vector.
 }
 
 \details{
   A matrix band is the set of elements in a matrix from a specific off-diagonal.
 }
+
+\seealso{
+  \link{getBandIdx}
+}
+
 \examples{
+mat <- matrix(1:9, 3, 3)
+band(mat, band.no = 2)
+mat
+band(mat, band.no = 2) <- c(9,10)
+mat
+
 data(cgEx)
 tact.1 <- contacts(cgEx)[[1]]
 b2 <- band(tact.1, 2)
 band(tact.1, 2) <- b2
-}
-\seealso{
-  \link{ContactGroup},
-  \link{getBandIdx},
-  \link{band}
-  
 }

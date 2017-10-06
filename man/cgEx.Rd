@@ -6,8 +6,11 @@
 \description{
   This is a sample ContactGroup object representing observations on chr22.
 }
+\format{
+  The data is an object of class \code{ContactGroup}.
+}
 \seealso{
-  \link{ContactGroup}
+  \code{\link{ContactGroup}}
 }
 \keyword{datasets}
 
