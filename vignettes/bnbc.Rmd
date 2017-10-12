@@ -1,7 +1,9 @@
 ---
 title: "The bnbc User's Guide"
 shorttitle: "bnbc guide"
-author: "Kipper Fletez-Brant, Kasper Daniel Hansen"
+author: 
+  - Kipper Fletez-Brant
+  - Kasper Daniel Hansen
 package: bnbc
 bibliography: bnbc.bib
 abstract: >
@@ -11,7 +13,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output: 
-  BiocStyle::html_document
+  BiocStyle::html_document:
+    toc_float: true
 ---
 
 # Introduction
@@ -79,7 +82,6 @@ What is needed is essentially a list of contact matrices. We assume that the con
 
 # Working with bnbc contact matrices
 
-
 We provide setter and getter methods for manipulating individual matrix bands for contact matrices as well.  First, we have functions for working with bands of individual matrices (not bnbc related):
 
 ```{r band_example}
@@ -121,9 +123,9 @@ cgEx.bnbc <- bnbc(cgEx.smooth, batch=colData(cgEx.smooth)$Batch,
                   threshold=1e7, step=4e4, nbands=11)
 ```
 
-# Sessioninfo
+# sessionInfo()
 
-```{r sessionInfo, results='asis', echo=FALSE}
+```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```
 

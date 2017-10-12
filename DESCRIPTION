@@ -25,7 +25,8 @@ Imports:
 	preprocessCore,
 	sva,
 	parallel,
-	EBImage
+	EBImage,
+	utils
 LinkingTo: Rcpp
 VignetteBuilder: knitr
 License: Artistic-2.0

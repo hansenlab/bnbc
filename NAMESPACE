@@ -7,7 +7,7 @@ import(GenomicRanges)
 import(IRanges)
 import(S4Vectors)
 importMethodsFrom(GenomeInfoDb, genome, seqlengths, seqlevels)
-
+importFrom(utils, txtProgressBar, setTxtProgressBar)
 
 importFrom(BiocGenerics, rownames, cbind)
 importFrom(sva, ComBat)

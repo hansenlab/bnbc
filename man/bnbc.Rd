@@ -7,7 +7,7 @@
   Applies BNBC method to normalize contact matrices.
 }
 \usage{bnbc(cg, batch, threshold = NULL, step = NULL, qn = TRUE, nbands
-= NULL, mod = NULL, mean.only = FALSE, tol = 5, bstart = 2)}
+= NULL, mod = NULL, mean.only = FALSE, tol = 5, bstart = 2, verbose = TRUE)}
 
 \arguments{
   \item{cg}{A ContactGroup object.}
@@ -29,6 +29,7 @@
     per batch.}
   \item{tol}{The number of significant digits for which the mean value
     of a band matrix must be greater than 0 to be processed by ComBat.}
+  \item{verbose}{Should the function print progress?}
 }
 
 \value{

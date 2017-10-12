@@ -35,6 +35,7 @@ cgBandApply <- function(cg, FUN, nbands=NULL, mc.cores=1, bstart=2, ...){
     if(is.null(nbands)){
         nbands <- nrow(cg) - 1
     }
+    stopifnot(bstart >= 1, bstart <= nbands)
     if (mc.cores == 1){
         return(sapply(bstart:nbands, function(ii){
             FUN(cg, ii, ...)
@@ -60,14 +61,15 @@ cgApply <- function(cg, FUN, mc.cores=1, ...){
 
 distanceIdx <- function(cg, threshold, step){
     stopifnot(is(cg, "ContactGroup"))
-    return((1:nrow(cg))[which(1:nrow(cg) * step <= threshold)])
+    return(seq_len(nrow(cg))[which(seq_len(nrow(cg)) * step <= threshold)])
 }
 
 getBandIdx <- function(n, band.no){
+    stopifnot(band.no >= 1, n >= band.no)
     ## number of elements is number of rows - (band.no - 1)
     n.elems <- n - (band.no - 1)
     ## number of rows is the number of elements
-    i <- 1:n.elems
+    i <- seq_len(n.elems)
     ## columns are the last n.elem columns, starting at band.no
     j <- band.no:n
     ## matrix allows for direct usage as indices

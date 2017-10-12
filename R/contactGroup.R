@@ -80,7 +80,7 @@ contacts <- function(x){
 
 setMethod("dim", signature(x = "ContactGroup"),
           function(x) {
-    c(length(x@rowData), nrow(x@colData))
+    c(length(rowData(x)), nrow(colData(x)))
 })
 
 setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
