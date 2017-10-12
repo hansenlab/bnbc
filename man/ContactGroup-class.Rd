@@ -83,6 +83,16 @@ ContactGroup(rowData, contacts, colData)
   A ContactGroup object.
 }
 
+\details{
+  The ContactGroup class contains a set of contact matrices in the slot
+  `contacts`.  All matrices are required to be of the same
+  dimensionality.  `ContactGroup()` expects a list of symmetric matrices to
+  be passed to the contstructor.  Data about these contact matrices is
+  held in two other slots.  Data about the genomic loci represented in
+  the ContactGroup is found in the `rowData` slot as a GenomicRanges objects, and sample-level
+  information is located in the `colData` slot as a DataFrame.
+}
+
 \references{
   Law, C.W., Chen, Y., Shi, W. and Smyth G.K.
   \emph{voom: Precision weights unlock linear model analysis tools for RNA-seq read counts.}
@@ -112,6 +122,13 @@ d.idx <- distanceIdx(cgEx, 1e7, 4e4)
 libs <- librarySize(cgEx)
 
 cgEx.cpm <- logCPM(cgEx)
+
+## below, upper.mats.list is a list of upper triangular matrices
+## SampleData is a DataFrame of sample data and LociData is a GenomicRanges objec
+\dontrun{
+  MatsList <- lapply(upper.mats.list, function(M) M[lower.tri(M)] = M[upper.tri(M)])
+  cg <- ContactGroup(LociData, MatsList, SampleData)
+}
 
 }
 \keyword{classes}
