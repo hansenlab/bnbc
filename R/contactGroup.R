@@ -13,7 +13,7 @@ setValidity("ContactGroup", function(object) {
     ## special case of CG with no entries
     ## nrowcol is empty list instead of 2d object
     if (class(nrowcol) == "list"){
-      if (length(rowData(object)) == 0 & nrow(object@colData) == 0){
+      if (length(rowData(object)) == 0 & nrow(colData(object)) == 0){
         return(txt)
       }
     }
@@ -49,50 +49,50 @@ setMethod("show", signature(object = "ContactGroup"),
 
 setMethod("colData", signature(x = "ContactGroup"),
           function(x, ...) {
-    x@colData
+    colData(x)
 })
 
 setReplaceMethod("colData", signature(x = "ContactGroup", value = "DataFrame"),
                  function(x, ..., value) {
-    x@colData <- value
+    colData(x) <- value
     x
 })
 
 setMethod("rowData", signature(x = "ContactGroup"),
           function(x, ...) {
-    x@rowData
+    rowData(x)
 })
 
 setReplaceMethod("rowData", signature(x = "ContactGroup"),
                  function(x, ..., value){
-    x@rowData <- value
+    rowData(x) <- value
     x
 })
 
 contacts <- function(x){
-    x@contacts
+    contacts(x)
 }
 
 `contacts<-` <- function(x, value){
-    x@contacts <- value
+    contacts(x) <- value
     x
 }
 
 setMethod("dim", signature(x = "ContactGroup"),
           function(x) {
-    c(length(x@rowData), nrow(x@colData))
+    c(length(rowData(x)), nrow(colData(x)))
 })
 
 setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
           function(x, i, j, ...) {
     if (!missing(i)) {
-        x@rowData <- x@rowData[i]
-        x@contacts <- lapply(x@contacts[j], function(xx){
+        rowData(x) <- rowData(x)[i]
+        contacts(x) <- lapply(contacts(x)[j], function(xx){
             return(xx[i, i, drop = FALSE]) })
     }
     if(!missing(j)) {
-        x@colData <- x@colData[j,]
-        x@contacts <- x@contacts[j]
+        colData(x) <- colData(x)[j,]
+        contacts(x) <- contacts(x)[j]
     }
     x
 })
