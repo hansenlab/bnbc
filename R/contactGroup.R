@@ -7,13 +7,13 @@ setClass("ContactGroup",
 setValidity("ContactGroup", function(object) {
     txt <- NULL
     contactTxt <- "all components of `contacts` has to be square matrices of the same dimension"
-    if(!all(sapply(object@contacts, is.matrix)))
+    if(!all(sapply(contacts(object), is.matrix)))
         txt <- contactTxt
-    nrowcol <- sapply(object@contacts, dim)
+    nrowcol <- sapply(contacts(object), dim)
     ## special case of CG with no entries
     ## nrowcol is empty list instead of 2d object
     if (class(nrowcol) == "list"){
-      if (length(object@rowData) == 0 & nrow(object@colData) == 0){
+      if (length(rowData(object)) == 0 & nrow(object@colData) == 0){
         return(txt)
       }
     }
@@ -21,11 +21,11 @@ setValidity("ContactGroup", function(object) {
         txt <- contactTxt
     if(any(nrowcol[1,] != nrowcol[2,]))
         txt <- contactTxt
-    if(nrow(object@colData) != length(object@contacts))
+    if(nrow(colData(object)) != length(contacts(object)))
         txt <- c(txt, "the length of `contacts` has to be the same as the number of rows of `colData`")
-    if(!all(names(object@contacts) == rownames(object@colData)))
+    if(!all(names(contacts(object)) == rownames(colData(object))))
         txt <- c(txt, "the names of `contacts` has to be equal to the rownames of `colData`")
-    if(length(object@rowData) != nrow(object@contacts[[1]]))
+    if(length(rowData(object)) != nrow(contacts(object)[[1]]))
         txt <- c(txt, "the length of `rowData` should be equal to the number of rows of the matrices in `contacts`")
     txt
 })
