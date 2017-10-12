@@ -12,7 +12,7 @@ bnbc <- function(cg, batch, threshold=NULL, step=NULL,
     for (ii in bstart:nbands){
         if (verbose && ii %% 50 == 0){ setTxtProgressBar(pb, (ii - bstart) / nbands) }
         mat <- getBandMatrix(cg, ii)
-        mat.good <- seq_along(nrow(mat))
+        mat.good <- seq_len(nrow(mat))
         if (qn) {
             mat <- normalize.quantiles(mat, copy = FALSE)
         }
