@@ -7,13 +7,13 @@ setClass("ContactGroup",
 setValidity("ContactGroup", function(object) {
     txt <- NULL
     contactTxt <- "all components of `contacts` has to be square matrices of the same dimension"
-    if(!all(sapply(object@contacts, is.matrix)))
+    if(!all(sapply(contacts(object), is.matrix)))
         txt <- contactTxt
-    nrowcol <- sapply(object@contacts, dim)
+    nrowcol <- sapply(contacts(object), dim)
     ## special case of CG with no entries
     ## nrowcol is empty list instead of 2d object
     if (class(nrowcol) == "list"){
-      if (length(object@rowData) == 0 & nrow(object@colData) == 0){
+      if (length(rowData(object)) == 0 & nrow(colData(object)) == 0){
         return(txt)
       }
     }
@@ -21,11 +21,11 @@ setValidity("ContactGroup", function(object) {
         txt <- contactTxt
     if(any(nrowcol[1,] != nrowcol[2,]))
         txt <- contactTxt
-    if(nrow(object@colData) != length(object@contacts))
+    if(nrow(colData(object)) != length(contacts(object)))
         txt <- c(txt, "the length of `contacts` has to be the same as the number of rows of `colData`")
-    if(!all(names(object@contacts) == rownames(object@colData)))
+    if(!all(names(contacts(object)) == rownames(colData(object))))
         txt <- c(txt, "the names of `contacts` has to be equal to the rownames of `colData`")
-    if(length(object@rowData) != nrow(object@contacts[[1]]))
+    if(length(rowData(object)) != nrow(contacts(object)[[1]]))
         txt <- c(txt, "the length of `rowData` should be equal to the number of rows of the matrices in `contacts`")
     txt
 })
@@ -49,32 +49,32 @@ setMethod("show", signature(object = "ContactGroup"),
 
 setMethod("colData", signature(x = "ContactGroup"),
           function(x, ...) {
-    x@colData
+    colData(x)
 })
 
 setReplaceMethod("colData", signature(x = "ContactGroup", value = "DataFrame"),
                  function(x, ..., value) {
-    x@colData <- value
+    colData(x) <- value
     x
 })
 
 setMethod("rowData", signature(x = "ContactGroup"),
           function(x, ...) {
-    x@rowData
+    rowData(x)
 })
 
 setReplaceMethod("rowData", signature(x = "ContactGroup"),
                  function(x, ..., value){
-    x@rowData <- value
+    rowData(x) <- value
     x
 })
 
 contacts <- function(x){
-    x@contacts
+    contacts(x)
 }
 
 `contacts<-` <- function(x, value){
-    x@contacts <- value
+    contacts(x) <- value
     x
 }
 
@@ -86,13 +86,13 @@ setMethod("dim", signature(x = "ContactGroup"),
 setMethod("[", signature(x = "ContactGroup", i = "ANY", j = "ANY"),
           function(x, i, j, ...) {
     if (!missing(i)) {
-        x@rowData <- x@rowData[i]
-        x@contacts <- lapply(x@contacts[j], function(xx){
+        rowData(x) <- rowData(x)[i]
+        contacts(x) <- lapply(contacts(x)[j], function(xx){
             return(xx[i, i, drop = FALSE]) })
     }
     if(!missing(j)) {
-        x@colData <- x@colData[j,]
-        x@contacts <- x@contacts[j]
+        colData(x) <- colData(x)[j,]
+        contacts(x) <- contacts(x)[j]
     }
     x
 })
