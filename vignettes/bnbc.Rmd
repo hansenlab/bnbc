@@ -80,7 +80,7 @@ cgEx
 
 What is needed is essentially a list of contact matrices. We assume that the contact matrices are square, with no missing values. We do not require that data have been transformed or pre-processed by various bias correction software and provide methods for some simple pre-processing techniques.
 
-Below, we demonstrate the steps needed to convert a set of hypothetical contact matrices into a `ContactGroup` object. The object `upper.mats.list` is supposed to be a list of contact matrices, each represented as an upper triangular matrix. We also suppose `LociData` to be a `GenomicRanges` object containing the loci of the contact matrices, and `SampleData` to be a `DataFrame` of per-sample covariates (i.e. cell type, sample name etc). We first convert all contact matrices to be symmetric matrices, then use the constructor method `ContactGroup()` to create the object.
+Below, we demonstrate the steps needed to convert a set of hypothetical contact matrices into a `ContactGroup` object. The object `upper.mats.list` is supposed to be a list of contact matrices, each represented as an upper triangular matrix. We also suppose `LociData` to be a `GenomicRanges` object containing the loci of the contact matrices, and `SampleData` to be a `DataFrame` of per-sample information (i.e. cell type, sample name etc). We first convert all contact matrices to be symmetric matrices, then use the constructor method `ContactGroup()` to create the object.
 
 ```{r data_to_bnbc, eval=FALSE, echo=TRUE}
 ## Example not run
