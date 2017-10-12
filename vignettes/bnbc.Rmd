@@ -63,9 +63,9 @@ cgEx
 Creating a `ContactGroup` object requires specifying the 3 slots above:
 
 ```{r create}
-cgExCreate <- ContactGroup(rowData=rowData(cgEx),
-                           contacts=contacts(cgEx),
-                           colData=colData(cgEx))
+cgEx <- ContactGroup(rowData=rowData(cgEx),
+                     contacts=contacts(cgEx),
+                     colData=colData(cgEx))
 ```
 
 Note that in this example, we used the accessor methods for each of these slots; there are also corresponding 'setter' methods, such as `rowData(cgEx)<-`. 
@@ -87,7 +87,7 @@ Below, we demonstrate the steps needed to convert a set of hypothetical contact 
 ## Convert upper triangles to symmetry matrix
 MatsList <- lapply(upper.mats.list, function(M) M[lower.tri(M)] = M[upper.tri(M)])
 ## Use ContactGroup constructor method
-cg <- ContactGroup(LociData, MatsList, SampleData)
+## cg <- ContactGroup(LociData, MatsList, SampleData)
 ```
 
 # Working with bnbc contact matrices

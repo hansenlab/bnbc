@@ -49,32 +49,32 @@ setMethod("show", signature(object = "ContactGroup"),
 
 setMethod("colData", signature(x = "ContactGroup"),
           function(x, ...) {
-    colData(x)
+    x@colData
 })
 
 setReplaceMethod("colData", signature(x = "ContactGroup", value = "DataFrame"),
                  function(x, ..., value) {
-    colData(x) <- value
+    x@colData <- value
     x
 })
 
 setMethod("rowData", signature(x = "ContactGroup"),
           function(x, ...) {
-    rowData(x)
+    x@rowData
 })
 
 setReplaceMethod("rowData", signature(x = "ContactGroup"),
                  function(x, ..., value){
-    rowData(x) <- value
+    x@rowData <- value
     x
 })
 
 contacts <- function(x){
-    contacts(x)
+    x@contacts
 }
 
 `contacts<-` <- function(x, value){
-    contacts(x) <- value
+    x@contacts <- value
     x
 }
 
