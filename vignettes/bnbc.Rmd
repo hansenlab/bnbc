@@ -37,7 +37,7 @@ Please cite our bioRxiv paper.
 
 It is well appreciated that Hi-C contact matrices exhibit an exponential decay in observed number of contacts as a function of the distance between the pair of interacting loci. In this work we operate, as has recently been done (i.e. [@HiCRep]), on the set of all loci interacting at a specific distance, one chromosome at a time. For a given distance $k$, the relevant set of loci are listed in each contact matrix as the entries comprising the $k$-th matrix diagonal (with the main diagonal being referred to as the first diagonal). We refer to these diagonals as matrix "bands".
 
-# Dependencies
+## Dependencies
 
 This document has the following dependencies
 
@@ -45,7 +45,7 @@ This document has the following dependencies
 library(bnbc)
 ```
 
-# bnbc class
+# The ContactGroup class from bnbc
 
 `r Biocpkg("bnbc")` uses the `ContactGroup` class to represent the set of contact matrices for a given set of genomic locis interactions. The class has 3 slots:
 
@@ -76,19 +76,39 @@ Printing a `ContactGroup` object gives the number of bins represented by the `ro
 cgEx
 ```
 
-## Getting your data into bnbc
+## Alternatives
 
-What is needed is essentially a list of contact matrices. We assume that the contact matrices are square, with no missing values. We do not require that data have been transformed or pre-processed by various bias correction software and provide methods for some simple pre-processing techniques.
+The `r Biocpkg("InteractionSet")` package contains a class called `InteractionSet` which is essentially an extension of the `ContactGroup` class. The internal storage format is different and `InteractionSet` is not restricted to square contact matrices like the `ContactGroup` class.  We are interested in porting the `bnbc()` function to using `InteractionSet`, but `bnbc()` extensively uses band matrices and we have optimized `r CRANpkg("Rcpp")`-based routines for getting and setting bands of normal matrices, which means `ContactGroup` is a pretty fast for our purposes.
+
+
+# Getting your data into bnbc
+
+To get data into `r Biocpkg("bnbc")` you need a list of contact matrices, one per sample. We assume the contact matrices are square, with no missing values. We do not require that data have been transformed or pre-processed by various bias correction software and provide methods for some simple pre-processing techniques.
+
+There is currently no standard Hi-C data format. Instead, different groups produces custom formats, often in forms of text files. Because contact matrices are square, it is common to only distribute the upper or lower triangular matrix.  In that case, you can use the following trick to make the matrix square:
+
+```{r contactTriang}
+mat <- matrix(1:9, nrow = 3, ncol = 3)
+mat[lower.tri(mat)] <- 0
+mat
+## Now we fill in the lower triangular matrix with the upper triangular
+mat[lower.tri(mat)] <- mat[upper.tri(mat)]
+mat
+```
+
 
 Below, we demonstrate the steps needed to convert a set of hypothetical contact matrices into a `ContactGroup` object. The object `upper.mats.list` is supposed to be a list of contact matrices, each represented as an upper triangular matrix. We also suppose `LociData` to be a `GenomicRanges` object containing the loci of the contact matrices, and `SampleData` to be a `DataFrame` of per-sample information (i.e. cell type, sample name etc). We first convert all contact matrices to be symmetric matrices, then use the constructor method `ContactGroup()` to create the object.
 
 ```{r data_to_bnbc, eval=FALSE, echo=TRUE}
 ## Example not run
 ## Convert upper triangles to symmetry matrix
-MatsList <- lapply(upper.mats.list, function(M) M[lower.tri(M)] = M[upper.tri(M)])
+MatsList <- lapply(upper.mats.list, function(M) {
+    M[lower.tri(M)] <- M[upper.tri(M)]
+})
 ## Use ContactGroup constructor method
-## cg <- ContactGroup(LociData, MatsList, SampleData)
+cg <- ContactGroup(rowData = LociData, contacts = MatsList, colData = SampleData)
 ```
+For this to work, the `contacts` list has to have the same names as the rownames of `colData`.
 
 # Working with bnbc contact matrices
 
@@ -130,7 +150,7 @@ Here we will use `r Biocpkg("bnbc")` to do batch correction on the first 10 matr
 
 ```{r bnbc}
 cgEx.bnbc <- bnbc(cgEx.smooth, batch=colData(cgEx.smooth)$Batch,
-                  threshold=1e7, step=4e4, nbands=11)
+                  threshold=1e7, step=4e4, nbands=11, verbose=FALSE)
 ```
 
 # sessionInfo()
