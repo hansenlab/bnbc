@@ -2,7 +2,7 @@ logCPM <- function(x){
     stopifnot(is(x, "ContactGroup"))
     libs <- (librarySize(x) + 1) / 10^6
     contacts(x) <- lapply(seq_len(ncol(x)), function(ii) {
-        log(contacts(x)[[ii]] + 0.5 / libs[ii])
+        log((contacts(x)[[ii]] + 0.5) / libs[ii])
     })
     x
 }
