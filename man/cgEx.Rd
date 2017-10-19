@@ -22,7 +22,12 @@
 \format{
   The data is an object of class \code{ContactGroup}.
 }
-
+\source{
+  Raw data are available from the 4D nucleome data portal
+  (\url{https://data.4dnucleome.org}) under accessions 4DNESYUYFD6H,
+  4DNESVKLYDOH, 4DNESHGL976U, 4DNESJ1VX52C, 4DNESI2UKI7P, 4DNESTAPSPUC,
+  4DNES4GSP9S4, 4DNESJIYRA44, 4DNESE3ICNE1.
+}
 \references{
 Lieberman-Aiden, E, et al. \emph{Comprehensive mapping of long-range
   interactions reveals folding principles of the human genome}. Science
