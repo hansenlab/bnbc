@@ -31,7 +31,7 @@ In this package we implement tools for general subsetting of and data extraction
 
 ## Citing bnbc
 
-Please cite our bioRxiv paper.
+If you use this package, please cite [@bnbc].
 
 ## Terminology
 

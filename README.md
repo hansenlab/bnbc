@@ -1,5 +1,6 @@
 # bnbc
-
+Bandwise Normalization and Batch Correction of Hi-C data.  
+Authors: Kipper Fletez-Brant, Kasper Hansen
 ## Software status
 
 | Resource:     | Travis CI     |
