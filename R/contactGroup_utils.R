@@ -133,3 +133,64 @@ getGroupZeros <- function(cg){
            })
            )
 }
+
+getGenomeIdx <- function(cool.fh, step){
+    cool.h <- H5Fopen(cool.fh)
+    bins <- data.frame(cool.h$bins)
+    ixns <- data.frame(cool.h$pixels[1:2])
+    bin.ixns <- data.frame(ixns,
+                       bins[ixns[, 1],],
+                       bins[ixns[, 2],])
+    rownames(bin.ixns) <- rownames(ixns)
+    for (ii in c(1, 2, 4, 5, 7,8)){
+        bin.ixns[[ii]] %<>% as.numeric
+    }
+    bin.ixns$dist <- NA
+    cis.dists <- bin.ixns[with(bin.ixns, chrom == chrom.1), "start.1"] -
+        bin.ixns[with(bin.ixns, chrom == chrom.1), "start"]
+    bin.ixns[with(bin.ixns, chrom == chrom.1),]$dist <- cis.dists
+    bin.ixns %<>% data.table(keep.rownames=TRUE)
+    bin.ixns$i <- bin.ixns$start/step
+    bin.ixns$j <- bin.ixns$start.1/step
+    setkey(bin.ixns, bin1_id, bin2_id)
+    list(bins=bins, bin.ixns=bin.ixns)
+}
+
+getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
+    bin.ixns.now <- bin.ixns[chrom == tgt.chr & chrom.1 == tgt.chr]
+    i1 <- bin.ixns.now$i + 1
+    j1 <- bin.ixns.now$j + 1
+    tgt.rows <- bin.ixns.now$rn %>% as.numeric
+    max.ij <- max(max(i1), max(j1))
+
+    cool.dat <- lapply(cools, function(xx){
+        mat.df <- h5read(xx, name="pixels/count", index=list(tgt.rows))
+        mat <- matrix(0, nrow=max.ij, ncol=max.ij)
+        mat[cbind(i1, j1)] <- mat.df
+        mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
+        mat
+    }) 
+    gr <- unique(unique(bin.ixns.now[, c("chrom", "end", "start")])) %>%
+        GRanges
+    ContactGroup(rowData=gr, contacts=cool.dat, colData=meta.df)
+}
+
+cg2bg2 <- function(cg, out.dir){
+    chr.ref <- data.frame(rowData(cg))
+    ijs <- which(upper.tri(contacts(cg)[[1]], diag=TRUE), arr.ind=TRUE)
+    devnull <- lapply(seq_along(contacts(cg)), function(ii){
+        fname <- file.path(out.dir, paste0(paste(data.frame(colData(cg)[ii,]),
+                                                 collapse="_"), ".bg2"))
+        message(fname)
+        out.df <- data.frame(chr.ref[ijs[,1], 1:3],
+                             chr.ref[ijs[,2], 1:3],
+                             contacts(cg)[[ii]][ijs])
+        colnames(out.df) <- c("chrom1", "start1", "end1", 
+                              "chrom2", "start2", "end2",
+                              "count")
+        write.table(out.df, file=fname, row.names=FALSE, col.names=FALSE, sep="\t",
+                    quote=FALSE)
+    })
+    message("completed")
+}
+
