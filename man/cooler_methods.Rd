@@ -54,7 +54,7 @@ cg2bg2(cg, out.dir)
   and users are encouraged to make use of this tool.
 }
 
-
+\examples{
 \dontrun{
 data(cgEx)
 step <- 4e4
@@ -75,7 +75,9 @@ cool.bnbc <- bnbc(cg.smooth, batch=colData(cgEx.smooth)$Batch,
                   threshold=1e7, step=4e4, nbands=11, verbose=FALSE)
 
 }
+}
 
 \seealso{
   \link{ContactGroup}
 }
+
