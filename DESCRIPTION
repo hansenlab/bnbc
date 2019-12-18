@@ -19,6 +19,8 @@ Suggests:
 Imports:
 	Rcpp (>= 0.12.12),
 	IRanges,
+	rhdf5,
+	data.table,
 	GenomeInfoDb,
 	S4Vectors,
 	matrixStats,

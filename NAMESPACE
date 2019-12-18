@@ -7,7 +7,7 @@ import(GenomicRanges)
 import(IRanges)
 import(S4Vectors)
 importMethodsFrom(GenomeInfoDb, genome, seqlengths, seqlevels)
-importFrom(utils, txtProgressBar, setTxtProgressBar)
+importFrom(utils, txtProgressBar, setTxtProgressBar, write.table)
 
 importFrom(BiocGenerics, rownames, cbind)
 importFrom(sva, ComBat)
@@ -15,7 +15,11 @@ importFrom(preprocessCore, normalize.quantiles)
 importFrom(parallel, mclapply)
 importFrom(matrixStats, rowVars)
 importFrom(EBImage, gblur, makeBrush, filter2)
-# importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
+
+importFrom(rhdf5, H5Fopen, h5read)
+importFrom(data.table, data.table, setkey)
+
+## importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
 
 
 
@@ -42,3 +46,4 @@ export(distanceIdx)
 export(getBandIdx)
 export("band<-")
 export(band)
+export(getGenomeIdx, getChrCGFromCools, cg2bg2)

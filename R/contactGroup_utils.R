@@ -143,13 +143,13 @@ getGenomeIdx <- function(cool.fh, step){
                        bins[ixns[, 2],])
     rownames(bin.ixns) <- rownames(ixns)
     for (ii in c(1, 2, 4, 5, 7,8)){
-        bin.ixns[[ii]] %<>% as.numeric
+        bin.ixns[[ii]] <- as.numeric(bin.ixns[[ii]])
     }
     bin.ixns$dist <- NA
     cis.dists <- bin.ixns[with(bin.ixns, chrom == chrom.1), "start.1"] -
         bin.ixns[with(bin.ixns, chrom == chrom.1), "start"]
     bin.ixns[with(bin.ixns, chrom == chrom.1),]$dist <- cis.dists
-    bin.ixns %<>% data.table(keep.rownames=TRUE)
+    bin.ixns <- data.table(bin.ixns, keep.rownames=TRUE)
     bin.ixns$i <- bin.ixns$start/step
     bin.ixns$j <- bin.ixns$start.1/step
     setkey(bin.ixns, bin1_id, bin2_id)
@@ -160,7 +160,7 @@ getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
     bin.ixns.now <- bin.ixns[chrom == tgt.chr & chrom.1 == tgt.chr]
     i1 <- bin.ixns.now$i + 1
     j1 <- bin.ixns.now$j + 1
-    tgt.rows <- bin.ixns.now$rn %>% as.numeric
+    tgt.rows <- as.numeric(bin.ixns.now$rn)
     max.ij <- max(max(i1), max(j1))
 
     cool.dat <- lapply(cools, function(xx){
@@ -170,8 +170,7 @@ getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
         mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
         mat
     }) 
-    gr <- unique(unique(bin.ixns.now[, c("chrom", "end", "start")])) %>%
-        GRanges
+    gr <- GRanges(unique(unique(bin.ixns.now[, c("chrom", "end", "start")])))
     ContactGroup(rowData=gr, contacts=cool.dat, colData=meta.df)
 }
 

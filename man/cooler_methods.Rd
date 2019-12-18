@@ -55,26 +55,25 @@ cg2bg2(cg, out.dir)
 }
 
 \examples{
-\dontrun{
-data(cgEx)
+coolerDir <- system.file("cooler", package = "bnbc")
+cools <- list.files(coolerDir, pattern="cool$", full.names=TRUE)
+
 step <- 4e4
 
-cools <- list.files(dir, pattern="cool", full.names=TRUE)
-
-bin.ixns.list <- getGenomeIdx(cools[1], step)
+bin.ixns.list <- bnbc:::getGenomeIdx(cools[1], step)
 bin.ixns <- bin.ixns.list$bin.ixns
-bins <- bin.ixns.list$bins
 
-batch <- colData(cgEx)$Batch
+#data(cgEx)
+#batch <- colData(cgEx)$Batch
 
-cool.cg <- getChrCGFromCools(bin.ixns, cools, "chr22", colData(cgEx))
-cool.cg.cpm <- logCPM(cool.cg)
-cg.smooth <- boxSmoother(cool.cg.cpm, h=5)
+data(cgEx)
+cool.cg <- bnbc:::getChrCGFromCools(bin.ixns, cools, "chr22", colData(cgEx)[1:2,])
+#cool.cg.cpm <- logCPM(cool.cg)
+#cg.smooth <- boxSmoother(cool.cg.cpm, h=5)
 
-cool.bnbc <- bnbc(cg.smooth, batch=colData(cgEx.smooth)$Batch,
-                  threshold=1e7, step=4e4, nbands=11, verbose=FALSE)
+#cool.bnbc <- bnbc(cg.smooth, batch=colData(cgEx.smooth)$Batch,
+#                  threshold=1e7, step=4e4, nbands=11, verbose=FALSE)
 
-}
 }
 
 \seealso{
