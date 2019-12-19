@@ -67,7 +67,9 @@ bin.ixns <- bin.ixns.list$bin.ixns
 #batch <- colData(cgEx)$Batch
 
 data(cgEx)
-cool.cg <- bnbc:::getChrCGFromCools(bin.ixns, cools, "chr22", colData(cgEx)[1:2,])
+cool.cg <- bnbc:::getChrCGFromCools(bin.ixns, cools, "chr22",
+colData(cgEx)[1:2,])
+all(contacts(cgEx)[[1]] == contacts(cool.cg)[[1]])
 #cool.cg.cpm <- logCPM(cool.cg)
 #cg.smooth <- boxSmoother(cool.cg.cpm, h=5)
 

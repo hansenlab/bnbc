@@ -138,17 +138,18 @@ getGenomeIdx <- function(cool.fh, step){
     cool.h <- H5Fopen(cool.fh)
     bins <- data.frame(cool.h$bins)
     ixns <- data.frame(cool.h$pixels[1:2])
+    H5Fclose(cool.h)
     bin.ixns <- data.frame(ixns,
-                       bins[ixns[, 1],],
-                       bins[ixns[, 2],])
+                       bins[ixns[, 1]+1,],
+                       bins[ixns[, 2]+1,])
     rownames(bin.ixns) <- rownames(ixns)
     for (ii in c(1, 2, 4, 5, 7,8)){
         bin.ixns[[ii]] <- as.numeric(bin.ixns[[ii]])
     }
     bin.ixns$dist <- NA
-    cis.dists <- bin.ixns[with(bin.ixns, chrom == chrom.1), "start.1"] -
-        bin.ixns[with(bin.ixns, chrom == chrom.1), "start"]
-    bin.ixns[with(bin.ixns, chrom == chrom.1),]$dist <- cis.dists
+    cis.dists <- bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1, "start.1"] -
+        bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1, "start"]
+    bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1,]$dist <- cis.dists
     bin.ixns <- data.table(bin.ixns, keep.rownames=TRUE)
     bin.ixns$i <- bin.ixns$start/step
     bin.ixns$j <- bin.ixns$start.1/step
@@ -167,7 +168,7 @@ getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
         mat.df <- h5read(xx, name="pixels/count", index=list(tgt.rows))
         mat <- matrix(0, nrow=max.ij, ncol=max.ij)
         mat[cbind(i1, j1)] <- mat.df
-        mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
+        mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]        
         mat
     }) 
     gr <- GRanges(unique(unique(bin.ixns.now[, c("chrom", "end", "start")])))
