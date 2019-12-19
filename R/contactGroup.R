@@ -12,7 +12,7 @@ setValidity("ContactGroup", function(object) {
     nrowcol <- sapply(contacts(object), dim)
     ## special case of CG with no entries
     ## nrowcol is empty list instead of 2d object
-    if (class(nrowcol) == "list"){
+    if (is.list(nrowcol)){
       if (length(rowData(object)) == 0 & nrow(colData(object)) == 0){
         return(txt)
       }

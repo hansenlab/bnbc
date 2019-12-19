@@ -14,23 +14,23 @@
 }
 
 \usage{
-getGenomeIdx(cool.fh, step)
-getChrCGFromCools(bin.ixns, cools, tgt.chr, meta.df)
-cg2bg2(cg, out.dir)
+getGenomeIdx(file, step)
+getChrCGFromCools(bin.ixns, files, chr, colData)
+cg2bedgraph2(cg, out.dir)
 }
 
 \arguments{
-  \item{cool.fh}{A file path pointing to a cooler file}
-  \item{step}{The resolution of the data inside the cooler file}
+  \item{file}{The name of a cooler file.}
+  \item{step}{The resolution of the data inside the cooler file.}
   \item{bin.ixns}{A list that contains a list of interactions and the
-    bins involved; output of \code{getGenomeIdx}}
-  \item{cools}{A list of cooler file names}
-  \item{tgt.chr}{The target chromosome to be normalized}
-  \item{meta.df}{A \code{data.frame} of metadata for the
-    \code{ContactGroup} object}
-  \item{cg}{A \code{ContactGroup} object}
-  \item{out.dir}{A directory in which individual BG2 files are to be
-    written}
+    bins involved; output of \code{getGenomeIdx}.}
+  \item{files}{A vector of cooler file names.}
+  \item{chr}{The target chromosome to be read.}
+  \item{colData}{A \code{data.frame} or \code{DataFrame} of metadata for the
+    \code{ContactGroup} object.}
+  \item{cg}{A \code{ContactGroup} object.}
+  \item{out.dir}{A directory in which individual bedgraph2 (BG2) files
+    are to be written.}
 }
 
 \value{
@@ -38,7 +38,7 @@ cg2bg2(cg, out.dir)
   interactions, as well as a listing of all bins present in the cooler
   file \code{cool.fh}. For \code{getChrCGFromCools}, a
   \code{ContactGroup} object. There is nothing returned by
-  \code{cg2bg2}.
+  \code{cg2bedgraph2}.
 }
 
 \details{
@@ -49,8 +49,8 @@ cg2bg2(cg, out.dir)
   operations. \code{getGenomeIdx} generates this index. The index can
   then be used to pull data for one chromosome for all cooler files
   using \code{getChrCGFromCools}. Users can then follow the standard
-  pipeline, and save their data in BG2 format using
-  \code{cg2bg2}. cooler provides a tool to convert this format to cooler
+  pipeline, and save their data in bedgraph2 (BG2) format using
+  \code{cg2bedgraph2}. cooler provides a tool to convert this format to cooler
   and users are encouraged to make use of this tool.
 }
 
@@ -63,19 +63,12 @@ step <- 4e4
 bin.ixns.list <- bnbc:::getGenomeIdx(cools[1], step)
 bin.ixns <- bin.ixns.list$bin.ixns
 
-#data(cgEx)
-#batch <- colData(cgEx)$Batch
-
 data(cgEx)
-cool.cg <- bnbc:::getChrCGFromCools(bin.ixns, cools, "chr22",
-colData(cgEx)[1:2,])
-all(contacts(cgEx)[[1]] == contacts(cool.cg)[[1]])
-#cool.cg.cpm <- logCPM(cool.cg)
-#cg.smooth <- boxSmoother(cool.cg.cpm, h=5)
-
-#cool.bnbc <- bnbc(cg.smooth, batch=colData(cgEx.smooth)$Batch,
-#                  threshold=1e7, step=4e4, nbands=11, verbose=FALSE)
-
+cool.cg <- bnbc:::getChrCGFromCools(bin.ixns,
+                                    files = cools,
+                                    chr = "chr22",
+                                    colData = colData(cgEx)[1:2,])
+all.equal(contacts(cgEx)[[1]], contacts(cool.cg)[[1]])
 }
 
 \seealso{

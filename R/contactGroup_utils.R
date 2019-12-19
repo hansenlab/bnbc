@@ -136,8 +136,8 @@ getGroupZeros <- function(cg){
            )
 }
 
-getGenomeIdx <- function(cool.fh, step){
-    cool.h <- H5Fopen(cool.fh)
+getGenomeIdx <- function(file, step){
+    cool.h <- H5Fopen(file)
     bins <- data.frame(cool.h$bins)
     ixns <- data.frame(cool.h$pixels[1:2])
     H5Fclose(cool.h)
@@ -159,14 +159,14 @@ getGenomeIdx <- function(cool.fh, step){
     list(bins=bins, bin.ixns=bin.ixns)
 }
 
-getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
-    bin.ixns.now <- bin.ixns[chrom == tgt.chr & chrom.1 == tgt.chr]
+getChrCGFromCools <- function(bin.ixns, files, chr, colData){
+    bin.ixns.now <- bin.ixns[chrom == chr & chrom.1 == chr]
     i1 <- bin.ixns.now$i + 1
     j1 <- bin.ixns.now$j + 1
     tgt.rows <- as.numeric(bin.ixns.now$rn)
     max.ij <- max(max(i1), max(j1))
 
-    cool.dat <- lapply(cools, function(xx){
+    cool.dat <- lapply(files, function(xx){
         mat.df <- h5read(xx, name="pixels/count", index=list(tgt.rows))
         mat <- matrix(0, nrow=max.ij, ncol=max.ij)
         mat[cbind(i1, j1)] <- mat.df
@@ -174,10 +174,10 @@ getChrCGFromCools <- function(bin.ixns, cools, tgt.chr, meta.df){
         mat
     }) 
     gr <- GRanges(unique(unique(bin.ixns.now[, c("chrom", "end", "start")])))
-    ContactGroup(rowData=gr, contacts=cool.dat, colData=meta.df)
+    ContactGroup(rowData=gr, contacts=cool.dat, colData=colData)
 }
 
-cg2bg2 <- function(cg, out.dir){
+cg2bedgraph2 <- function(cg, out.dir){
     chr.ref <- data.frame(rowData(cg))
     ijs <- which(upper.tri(contacts(cg)[[1]], diag=TRUE), arr.ind=TRUE)
     devnull <- lapply(seq_along(contacts(cg)), function(ii){
