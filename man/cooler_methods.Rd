@@ -1,7 +1,7 @@
 \name{cooler_methods}
 \alias{getGenomeIdx}
 \alias{getChrCGFromCools}
-\alias{cg2bg2}
+\alias{cg2bedgraph2}
 
 \title{
   Methods for manipulating cooler files
