@@ -16,7 +16,7 @@ importFrom(parallel, mclapply)
 importFrom(matrixStats, rowVars)
 importFrom(EBImage, gblur, makeBrush, filter2)
 
-importFrom(rhdf5, H5Fopen, h5read)
+importFrom(rhdf5, H5Fopen, H5Fclose, h5read)
 importFrom(data.table, data.table, setkey)
 
 ## importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
