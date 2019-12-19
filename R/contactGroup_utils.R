@@ -1,3 +1,5 @@
+utils::globalVariables(c("chrom", "chrom.1", "bin1_id", "bin2_id"))
+
 logCPM <- function(x){
     stopifnot(is(x, "ContactGroup"))
     libs <- (librarySize(x) + 1) / 10^6
