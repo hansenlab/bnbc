@@ -162,7 +162,9 @@ cg2bedgraph2 <- function (cg, out.dir, prefix) {
     message("completed")
 } 
 
-getChrCGFromCools <- function(files, chr, step, index.gr, work.dir, exp.name, coldata){
+getChrCGFromCools <- function(files, chr, step, index.gr, work.dir, exp.name, coldata,
+                              norm.factor=NULL){
+    mcols(index.gr)  <- NULL
     mat.list <- list()
     for (cooler in files){
         message(basename(cooler))
@@ -173,11 +175,12 @@ getChrCGFromCools <- function(files, chr, step, index.gr, work.dir, exp.name, co
                                              mcool=cooler,
                                              resolution=step,
                                              experiment_name=exp.name)
-        Brick_load_data_from_mcool(Brick=mbc, mcool=cooler, resolution=step)
+        Brick_load_data_from_mcool(Brick=mbc, mcool=cooler, resolution=step, norm_factor=norm.factor)
         test.mat <- Brick_get_entire_matrix(mbc, chr, chr, step)
         mat.list[[basename(cooler)]] <- test.mat
     }
-    h5closeAll()    
+    h5closeAll()
+    names(mat.list) <- rownames(coldata)
     ContactGroup(rowData=index.gr, contacts=mat.list, colData=coldata)
 }
     
