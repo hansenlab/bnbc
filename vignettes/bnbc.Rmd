@@ -43,6 +43,10 @@ This document has the following dependencies
 
 ```{r dependencies, warning=FALSE, message=FALSE}
 library(bnbc)
+library(HiCBricks)
+library(BSgenome.Hsapiens.UCSC.hg19)
+
+hg19 <- BSgenome.Hsapiens.UCSC.hg19
 ```
 
 # The ContactGroup class from bnbc
@@ -116,23 +120,24 @@ The `.cooler` file format is widely adopted and supported by `bnbc`. We assume a
 
 ```{r cooler_get_genome_index}
 coolerDir <- system.file("cooler", package = "bnbc")
-cools <- list.files(coolerDir, pattern="cool$", full.names=TRUE)
+cools <- list.files(coolerDir, pattern="mcool$", full.names=TRUE)
 
 step <- 4e4
 
-bin.ixns.list <- bnbc:::getGenomeIdx(cools[1], step)
-bin.ixns <- bin.ixns.list$bin.ixns
+ixns <- bnbc:::getChrIdx(seqlengths(hg19)["chr22"], step, "chr22")
 ```
-We have, as output, a list `bin.ixns.list`, of two elements. The first is the element `bin.ixns`, which is a `data.table` object that lists the set of interactions observed in the cooler file. The other element is a `data.frame` object `bins`, which lists the set of genomic bins and their coordinates. These are a convenience used in some functions and generally are not of interest to the end user. 
-
-With our index, we can proceed to load our data into memory, one chromosome's data at a time (at this time our method does not handle \textit{trans}-interactions). We emphasize that with all observations from interactions between loci on one chromosome in memory, our algorithm is extremely efficient, with custom routines for matrix updating, and requires only pass over the data. 
+We have, as output the `GRanges` object `ixns`. With our index, we can proceed to load our data into memory, one chromosome's data at a time (at this time our method does not handle \textit{trans}-interactions). We emphasize that with all observations from interactions between loci on one chromosome in memory, our algorithm is extremely efficient, with custom routines for matrix updating, and requires only pass over the data. 
 
 ```{r cooler_get_cg}
-data(cgEx)
-cool.cg <- bnbc:::getChrCGFromCools(bin.ixns,
-                                    files = cools,
+dir.create("tmp")
+
+cool.cg <- bnbc:::getChrCGFromCools(files = cools,
                                     chr = "chr22",
-                                    colData = colData(cgEx)[1:2,])
+                                    step = step,
+                                    index.gr = ixns,
+                                    work.dir = "tmp",
+                                    exp.name = "example",
+                                    coldata = colData(cgEx)[1:2,])
 all.equal(contacts(cgEx)[[1]], contacts(cool.cg)[[1]])
 ```
 

@@ -1,10 +1,14 @@
 utils::globalVariables(c("chrom", "chrom.1", "bin1_id", "bin2_id"))
 
-logCPM <- function(x){
+logCPM <- function(x, modified=FALSE){
     stopifnot(is(x, "ContactGroup"))
     libs <- (librarySize(x) + 1) / 10^6
+    c. <- 0
+    if (!modified){
+        c. <- abs(1/min(libs) - 1/max(libs))
+    }
     contacts(x) <- lapply(seq_len(ncol(x)), function(ii) {
-        log((contacts(x)[[ii]] + 0.5) / libs[ii])
+        log((contacts(x)[[ii]] + 0.5) / libs[ii] + c.)
     })
     x
 }
@@ -136,63 +140,52 @@ getGroupZeros <- function(cg){
            )
 }
 
-getGenomeIdx <- function(file, step){
-    cool.h <- H5Fopen(file)
-    bins <- data.frame(cool.h$bins)
-    ixns <- data.frame(cool.h$pixels[1:2])
-    H5Fclose(cool.h)
-    bin.ixns <- data.frame(ixns,
-                       bins[ixns[, 1]+1,],
-                       bins[ixns[, 2]+1,])
-    rownames(bin.ixns) <- rownames(ixns)
-    for (ii in c(1, 2, 4, 5, 7,8)){
-        bin.ixns[[ii]] <- as.numeric(bin.ixns[[ii]])
-    }
-    bin.ixns$dist <- NA
-    cis.dists <- bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1, "start.1"] -
-        bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1, "start"]
-    bin.ixns[bin.ixns$chrom == bin.ixns$chrom.1,]$dist <- cis.dists
-    bin.ixns <- data.table(bin.ixns, keep.rownames=TRUE)
-    bin.ixns$i <- bin.ixns$start/step
-    bin.ixns$j <- bin.ixns$start.1/step
-    setkey(bin.ixns, bin1_id, bin2_id)
-    list(bins=bins, bin.ixns=bin.ixns)
+getChrIdx <- function(chr.length, step, chr){
+    bins <- seq(from=0, to=chr.length, by=step)
+    ends <- bins + step
+    GRanges(seqnames=chr, ranges=IRanges(start=bins, width=step),
+            mcols=bins)
 }
 
-getChrCGFromCools <- function(bin.ixns, files, chr, colData){
-    bin.ixns.now <- bin.ixns[chrom == chr & chrom.1 == chr]
-    i1 <- bin.ixns.now$i + 1
-    j1 <- bin.ixns.now$j + 1
-    tgt.rows <- as.numeric(bin.ixns.now$rn)
-    max.ij <- max(max(i1), max(j1))
-
-    cool.dat <- lapply(files, function(xx){
-        mat.df <- h5read(xx, name="pixels/count", index=list(tgt.rows))
-        mat <- matrix(0, nrow=max.ij, ncol=max.ij)
-        mat[cbind(i1, j1)] <- mat.df
-        mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]        
-        mat
-    }) 
-    gr <- GRanges(unique(unique(bin.ixns.now[, c("chrom", "end", "start")])))
-    ContactGroup(rowData=gr, contacts=cool.dat, colData=colData)
-}
-
-cg2bedgraph2 <- function(cg, out.dir){
+cg2bedgraph2 <- function (cg, out.dir, prefix) {
     chr.ref <- data.frame(rowData(cg))
     ijs <- which(upper.tri(contacts(cg)[[1]], diag=TRUE), arr.ind=TRUE)
     devnull <- lapply(seq_along(contacts(cg)), function(ii){
-        fname <- file.path(out.dir, paste0(paste(data.frame(colData(cg)[ii,]),
-                                                 collapse="_"), ".bg2"))
+        f.out <- paste0(prefix, paste(data.frame(colData(cg)[ii, ]), collapse = "_"),
+                        ".bg2")
+        fname <- file.path(out.dir, f.out)
         message(fname)
-        out.df <- data.frame(chr.ref[ijs[,1], 1:3],
-                             chr.ref[ijs[,2], 1:3],
+        out.df <- data.frame(chr.ref[ijs[, 1], 1:3],
+                             chr.ref[ijs[, 2], 1:3],
                              contacts(cg)[[ii]][ijs])
-        colnames(out.df) <- c("chrom1", "start1", "end1", 
-                              "chrom2", "start2", "end2",
-                              "count")
-        write.table(out.df, file=fname, row.names=FALSE, col.names=FALSE, sep="\t",
-                    quote=FALSE)
+        colnames(out.df) <- c("chrom1", "start1", "end1", "chrom2", 
+            "start2", "end2", "count")
+        write.table(out.df, file=fname, row.names=FALSE, 
+            col.names=FALSE, sep="\t", quote=FALSE)
     })
     message("completed")
-}
+} 
 
+getChrCGFromCools <- function(files, chr, step, index.gr, work.dir, exp.name, coldata,
+                              norm.factor=NULL){
+    mcols(index.gr)  <- NULL
+    mat.list <- list()
+    for (cooler in files){
+        message(basename(cooler))
+        path.now <- file.path(work.dir, basename(cooler))
+        dir.create(path.now)
+        mbc <- Create_many_Bricks_from_mcool(output_directory=path.now, 
+                                             file_prefix=basename(cooler),
+                                             mcool=cooler,
+                                             resolution=step,
+                                             experiment_name=exp.name)
+        Brick_load_data_from_mcool(Brick=mbc, mcool=cooler, resolution=step, norm_factor=norm.factor)
+        test.mat <- Brick_get_entire_matrix(mbc, chr, chr, step)
+        mat.list[[basename(cooler)]] <- test.mat
+    }
+    h5closeAll()
+    names(mat.list) <- rownames(coldata)
+    ContactGroup(rowData=index.gr, contacts=mat.list, colData=coldata)
+}
+    
+    

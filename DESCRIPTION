@@ -28,7 +28,8 @@ Imports:
 	sva,
 	parallel,
 	EBImage,
-	utils
+	utils,
+        HiCBricks
 LinkingTo: Rcpp
 VignetteBuilder: knitr
 License: Artistic-2.0
