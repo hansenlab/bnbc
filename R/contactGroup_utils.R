@@ -1,10 +1,14 @@
 utils::globalVariables(c("chrom", "chrom.1", "bin1_id", "bin2_id"))
 
-logCPM <- function(x){
+logCPM <- function(x, modified=FALSE){
     stopifnot(is(x, "ContactGroup"))
     libs <- (librarySize(x) + 1) / 10^6
+    c. <- 0
+    if (!modified){
+        c. <- abs(1/min(libs) - 1/max(libs))
+    }
     contacts(x) <- lapply(seq_len(ncol(x)), function(ii) {
-        log((contacts(x)[[ii]] + 0.5) / libs[ii])
+        log((contacts(x)[[ii]] + 0.5) / libs[ii] + c.)
     })
     x
 }
