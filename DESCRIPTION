@@ -15,8 +15,8 @@ Suggests:
 	BiocStyle,
 	knitr,
 	rmarkdown,
-        RUnit,
-    BSgenome.Hsapiens.UCSC.hg19     
+    RUnit,
+    BSgenome.Hsapiens.UCSC.hg19
 Imports:
 	Rcpp (>= 0.12.12),
 	IRanges,
