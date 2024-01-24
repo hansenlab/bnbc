@@ -69,7 +69,7 @@ ContactGroup(rowData, contacts, colData)
 }
 \section{Utilities}{
   \describe{
-    \item{}{\code{contacts(x)}, \code{contacts(x) <- value}: Method to
+    \item{contacts}{\code{contacts(x)}, \code{contacts(x) <- value}: Method to
       extract the list of contact matrices from a
       ContactGroup. \code{value} is expected to be a list object.}
     \item{distanceIdx}{\code{signature(cg = "ContactGroup",

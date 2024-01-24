@@ -1,6 +1,7 @@
 \name{cooler_methods}
 \alias{getGenomeIdx}
 \alias{getChrCGFromCools}
+\alias{getChrIdx}
 \alias{cg2bedgraph2}
 
 \title{
@@ -13,8 +14,9 @@
 }
 
 \usage{
-getChrIdx(chr.length, step)
-getChrCGFromCools(files, chr, step, index.gr, work.dir, exp.name, coldata)
+getChrIdx(chr.length, chr, step)
+getChrCGFromCools(files, chr, step, index.gr, work.dir, exp.name,
+                  coldata, norm.factor=NULL)
 cg2bedgraph2(cg, out.dir, prefix)
 }
 
@@ -34,6 +36,7 @@ cg2bedgraph2(cg, out.dir, prefix)
   \item{out.dir}{A directory in which individual bedgraph2 (BG2) files
     are to be written.}
   \item{prefix}{A prefix for all output files; e.g. "treatment_study_".}
+  \item{norm.factor}{The normalization factor}
 }
 
 \value{
@@ -54,7 +57,12 @@ cg2bedgraph2(cg, out.dir, prefix)
   encouraged to make use of this tool. Note that HiCBricks expects
   multiple resolutions in the cooler file.
 }
+\seealso{
+  \link{ContactGroup}
+}
 
+
+\examples{
 \dontrun{
 coolerDir <- system.file("cooler", package = "bnbc")
 cools <- list.files(coolerDir, pattern="cool$", full.names=TRUE)
@@ -73,8 +81,5 @@ exp.name="example_case",
 colData = colData(cgEx)[1:2,])
 all.equal(contacts(cgEx)[[1]], contacts(cool.cg)[[1]])
 }
-
-\seealso{
-  \link{ContactGroup}
 }
 

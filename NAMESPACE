@@ -16,8 +16,12 @@ importFrom(parallel, mclapply)
 importFrom(matrixStats, rowVars)
 importFrom(EBImage, gblur, makeBrush, filter2)
 
-importFrom(rhdf5, H5Fopen, H5Fclose, h5read)
+importFrom(rhdf5, H5Fopen, H5Fclose, h5read, h5closeAll)
 importFrom(data.table, data.table, setkey)
+
+importFrom(HiCBricks, Create_many_Bricks_from_mcool,
+           Brick_load_data_from_mcool,
+           Brick_get_entire_matrix)
 
 ## importMethodsFrom(Matrix, mean, rowMeans, t, triu, which)
 

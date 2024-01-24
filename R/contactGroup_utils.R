@@ -140,7 +140,7 @@ getGroupZeros <- function(cg){
            )
 }
 
-getChrIdx <- function(chr.length, step, chr){
+getChrIdx <- function(chr.length, chr, step){
     bins <- seq(from=0, to=chr.length, by=step)
     ends <- bins + step
     GRanges(seqnames=chr, ranges=IRanges(start=bins, width=step),

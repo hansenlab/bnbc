@@ -124,7 +124,7 @@ cools <- list.files(coolerDir, pattern="mcool$", full.names=TRUE)
 
 step <- 4e4
 
-ixns <- bnbc:::getChrIdx(seqlengths(hg19)["chr22"], step, "chr22")
+ixns <- bnbc:::getChrIdx(seqlengths(hg19)["chr22"], "chr22", step)
 ```
 We have, as output the `GRanges` object `ixns`. With our index, we can proceed to load our data into memory, one chromosome's data at a time (at this time our method does not handle \textit{trans}-interactions). We emphasize that with all observations from interactions between loci on one chromosome in memory, our algorithm is extremely efficient, with custom routines for matrix updating, and requires only pass over the data. 
 
