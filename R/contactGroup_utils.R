@@ -168,22 +168,39 @@ cg2bedgraph2 <- function (cg, out.dir, prefix) {
 
 getChrCGFromCools <- function(files, chr, step, index.gr, work.dir, exp.name, coldata,
                               norm.factor=NULL){
-    mcols(index.gr)  <- NULL
+    mcols(index.gr) <- NULL
+    n_bins <- length(index.gr)
+    res <- as.character(step)
+    base <- paste0("/resolutions/", res)
     mat.list <- list()
     for (cooler in files){
         message(basename(cooler))
-        path.now <- file.path(work.dir, basename(cooler))
-        dir.create(path.now)
-        mbc <- Create_many_Bricks_from_mcool(output_directory=path.now, 
-                                             file_prefix=basename(cooler),
-                                             mcool=cooler,
-                                             resolution=step,
-                                             experiment_name=exp.name)
-        Brick_load_data_from_mcool(Brick=mbc, mcool=cooler, resolution=step, norm_factor=norm.factor)
-        test.mat <- Brick_get_entire_matrix(mbc, chr, chr, step)
-        mat.list[[basename(cooler)]] <- test.mat
+        chrom_names <- h5read(cooler, paste0(base, "/chroms/name"))
+        chr_idx0 <- which(chrom_names == chr) - 1L
+        if (length(chr_idx0) == 0L)
+            stop("Chromosome ", chr, " not found in ", basename(cooler))
+        chrom_offset <- h5read(cooler, paste0(base, "/indexes/chrom_offset"))
+        bin_start0 <- chrom_offset[chr_idx0 + 1L]
+        bin_end0 <- bin_start0 + n_bins - 1L
+        bin1_off <- h5read(cooler, paste0(base, "/indexes/bin1_offset"),
+                           index=list(seq.int(bin_start0 + 1L, bin_end0 + 2L)))
+        pix_start0 <- bin1_off[1L]
+        pix_end0 <- bin1_off[length(bin1_off)] - 1L
+        mat <- matrix(0.0, n_bins, n_bins)
+        if (pix_end0 >= pix_start0) {
+            pix_idx <- list(seq.int(pix_start0 + 1L, pix_end0 + 1L))
+            bin1 <- h5read(cooler, paste0(base, "/pixels/bin1_id"), index=pix_idx)
+            bin2 <- h5read(cooler, paste0(base, "/pixels/bin2_id"), index=pix_idx)
+            vals <- h5read(cooler, paste0(base, "/pixels/count"), index=pix_idx)
+            keep <- bin2 >= bin_start0 & bin2 <= bin_end0
+            bin1 <- bin1[keep]; bin2 <- bin2[keep]; vals <- vals[keep]
+            i <- bin1 - bin_start0 + 1L
+            j <- bin2 - bin_start0 + 1L
+            mat[cbind(i, j)] <- vals
+            mat[cbind(j, i)] <- vals
+        }
+        mat.list[[basename(cooler)]] <- mat
     }
-    h5closeAll()
     names(mat.list) <- rownames(coldata)
     ContactGroup(rowData=index.gr, contacts=mat.list, colData=coldata)
 }

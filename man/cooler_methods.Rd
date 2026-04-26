@@ -49,13 +49,12 @@ cg2bedgraph2(cg, out.dir, prefix)
 \details{
   These methods allow for the normalization of cooler files. Users must
   create their own index, for which we provide \code{getChrIdx}, which
-  is an input into \code{getChrCGFromCools}, which uses HiCBricks to
-  access the cooler files, and returns a \code{ContactGroup}
-  object. Users can then follow the standard pipeline, and save their
-  data in bedgraph2 (BG2) format using \code{cg2bedgraph2}. cooler
-  provides a tool to convert this format to cooler and users are
-  encouraged to make use of this tool. Note that HiCBricks expects
-  multiple resolutions in the cooler file.
+  is an input into \code{getChrCGFromCools}. \code{getChrCGFromCools}
+  reads multi-resolution cooler (mcool) files directly via \code{rhdf5}
+  and returns a \code{ContactGroup} object. Users can then follow the
+  standard pipeline, and save their data in bedgraph2 (BG2) format using
+  \code{cg2bedgraph2}. Note that \code{getChrCGFromCools} expects
+  multiple resolutions in the cooler file (mcool format).
 }
 \seealso{
   \link{ContactGroup}

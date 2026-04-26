@@ -43,7 +43,6 @@ This document has the following dependencies
 
 ```{r dependencies, warning=FALSE, message=FALSE}
 library(bnbc)
-library(HiCBricks)
 library(BSgenome.Hsapiens.UCSC.hg19)
 
 hg19 <- BSgenome.Hsapiens.UCSC.hg19
